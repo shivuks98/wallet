@@ -97,7 +97,7 @@ export default class Login extends React.Component{
                     
                     </View>
                             
-                    <TouchableOpacity > 
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate('Forgot PIN?')}> 
                         <Text style={{color:'red',paddingLeft:50,paddingTop:10}}>Forgot PIN?</Text>
                     </TouchableOpacity>
                     
