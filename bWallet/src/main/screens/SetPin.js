@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import SnackBar from 'react-native-snackbar'
 
@@ -12,7 +12,7 @@ export default class SetPin extends React.Component{
         }
     }
     handleNext=()=>{
-        var pin='Enter the New PIN'
+        var Pin='Enter the New PIN'
         var cpin='Enter the Confirm PIN'
         var compare='Your new PIN and confirm PIN do not match'
         var len='PIN must be 4 digit'
@@ -31,9 +31,9 @@ export default class SetPin extends React.Component{
         var rtwo=list[1]-2
         var rthree=list[2]-1
         
-        if(!this.state.pin){
-            text=pin
-        }else if(!this.state.confirm){
+        if(this.state.pin==null){
+            text=Pin
+        }else if(this.state.confirm==null){
             text=cpin
         }else if(this.state.pin.lengh<4 || this.state.confirm.length<4){
             text=len
@@ -67,7 +67,7 @@ export default class SetPin extends React.Component{
    
     render(){
         return(
-            <View style={Styles.container}>
+            <KeyboardAvoidingView style={Styles.container} behavior="padding">
                 <View style={[Styles.container,{paddingBottom:50,alignItems:'center',justifyContent:'center'}]}>
                 {/* <View style={{flex:1,alignItems:"flex-start",paddingTop:70,padding:80,alignContent:'center'}}> */}
                     <Text style={Styles.text}>New PIN</Text>
@@ -83,7 +83,7 @@ export default class SetPin extends React.Component{
                         <Text style={Styles.buttonText}>NEXT</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

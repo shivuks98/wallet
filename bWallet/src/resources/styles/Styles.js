@@ -44,7 +44,7 @@ export default StyleSheet.create({
         backgroundColor:"red",
         position:'absolute',
         bottom:0,
-        height:40
+        height:35
     },
     buttonText:{
         textAlign:'center',

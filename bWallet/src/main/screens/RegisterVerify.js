@@ -72,7 +72,7 @@ class RegisterVerify extends React.Component{
                     <View>
                         {this.state.timer !=0 &&(
                         <View style={{flexDirection:'row'}}> 
-                        {/* <Image style={{margin:10}}source={require('../../resources/images/restart.png')}/> */}
+                        <Image style={{margin:10}}source={require('../../resources/images/restart.png')}/>
                                             
                         <Text style={[styles.text,{color:'red',textAlign:'left'}]}>
                         Click to resend in {this.state.timer} seconds.</Text></View>

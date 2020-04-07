@@ -8,13 +8,11 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import SnackBar from 'react-native-snackbar'
 import CountryPicker,{CountryModalPicker} from 'react-native-country-picker-modal'
 
-
-
 var gender=[
     {label:'Male',value:0},
     {label:'Female', value:1}
 ]
-////bahrain, kuwait oman,qatar, saudi arabia, united arab  emirates
+
 var country=[{value:"Bahrain"},{value:"Kuwait"},{value:"Oman"},
 {value:"Qatar"},{value:"Saudi Arabia"},{value:"United Arab Emirates"},]
 class RegisterForm extends React.Component{
@@ -31,10 +29,20 @@ class RegisterForm extends React.Component{
             gender:null,
             nationality:null,
             saveAddress:false,
-            country:country[0].value
+            age:null,
+            
+            // Address
+            houseNo:null,
+            flatNo:null,
+            streetName:null,
+            area:null,
+            block:null,
+            country:country[0].value,
+            
         }
     }
     validate=()=>{
+
         this.setState({buttonClicked:true})
        var firstname='Please enter First Name'
         var lastname='Please enter Last Name'
@@ -42,6 +50,7 @@ class RegisterForm extends React.Component{
         var gender="Select Gender"
         var nationality='Enter nationality'
         var address="Add Address"
+        var age="You must be at least 13 years old to Register"
         var text=''
         var shows=false
         if(this.state.firstname==null){
@@ -50,7 +59,10 @@ class RegisterForm extends React.Component{
             text=lastname
         }else if(this.state.dob==null ){
             text=dob
-        }else if(this.state.gender==null){
+        }else if(this.state.age<13){
+            text=age
+        }
+        else if(this.state.gender==null){
             text=gender
         }else if(this.state.nationality==null){
             text=nationality
@@ -80,7 +92,34 @@ class RegisterForm extends React.Component{
             dob:date,
             date:false
         })
-        console.log(this.state.dob)
+        var today = new Date();
+    var birthDate = new Date(month+"/"+name.getDate()+"/"+name.getFullYear());  // create a date object directly from `dob1` argument
+    var age_now = today.getFullYear() - birthDate.getFullYear();
+    // console.log(age_now);
+    var m = today.getMonth() - birthDate.getMonth();
+    // console.log(m);
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age_now--;
+    }
+    this.setState({age:age_now})
+    // console.log(new Date()+'birth date' + birthDate)
+    // console.log(age_now);
+   
+        // console.log(this.state.dob)
+        
+    }
+    validateAddress=()=>{
+        // this.setState({visible:false,saveAddress:true})}
+        // console.log(this.state)
+        if(!this.state.houseNo || !this.state.streetName || !this.state.area || !this.state.block){
+            SnackBar.show({
+                text:"Please fill mandatory fields",
+                duration:SnackBar.LENGTH_LONG
+            })
+        }else{
+            this.setState({visible:false,saveAddress:true})
+        }
         
     }
     render(){
@@ -111,8 +150,9 @@ class RegisterForm extends React.Component{
                     
                     <RadioForm radio_props={gender}
                     labelHorizontal={true}
-                     formHorizontal={true}
-                     
+                     formHorizontal={true} 
+                    //  onSelect={}
+                    // initial={0}
                       labelStyle={{paddingLeft:10,paddingRight:'30%'}}
                      onPress={(value)=>this.setState({gender:value})}
                      />
@@ -158,21 +198,23 @@ class RegisterForm extends React.Component{
                     </View>
                     <Text style={styles.text}>Building/ House NO</Text>
                     <View style={{flexDirection:'row'}}>
-                    <TextInput style={[styles.textInput,{width:'100%'}]}/>
+                    <TextInput value={this.state.houseNo} onChangeText={(house)=>this.setState({houseNo:house})} style={[styles.textInput,{width:'100%'}]}/>
                     <Text style={{color:'red',paddingTop:15}}>*</Text>
                     </View>
-                    <Text style={[styles.text,{paddingTop:25}]}>Flat No</Text>
-                    <TextInput style={styles.textInput}/>
-                    <Text style={[styles.text,{paddingTop:25}]}>Road/Street Name</Text>
+                    <Text style={[styles.text,{paddingTop:20}]}>Flat No</Text>
+                    <TextInput value={this.state.flatNo} onChangeText={(flat)=>this.setState({flatNo:flat})} style={styles.textInput}/>
+                    <Text style={[styles.text,{paddingTop:20}]}>Road/Street Name</Text>
                     <View style={{flexDirection:'row'}}>
-                    <TextInput style={[styles.textInput,{width:'100%'}]}/>
+                    <TextInput value={this.state.streetName} onChangeText={(street)=>this.setState({streetName:street})} style={[styles.textInput,{width:'100%'}]}/>
                     <Text style={{color:'red',paddingTop:15}}>*</Text>
                     </View>
                     {/* <Text> </Text> */}
                     <View style={{flexDirection:'row',justifyContent:'center',paddingRight:10,}}>
-                        <TextInput style={[styles.textInput,{paddingTop:25,width:"45%",marginHorizontal:10}]} placeholder="Area"/>
+                        <TextInput value={this.state.area} onChangeText={(area)=>this.setState({area:area})}
+                        style={[styles.textInput,{paddingTop:25,width:"45%",marginHorizontal:10}]} placeholder="Area"/>
                         <Text style={{color:'red',paddingTop:25}}>*</Text>
-                        <TextInput keyboardType='number-pad' style={[styles.textInput,{paddingTop:25,width:'47%',marginHorizontal:6}]} placeholder="Block"/> 
+                        <TextInput value={this.state.block} onChangeText={(block)=>this.setState({block:block})}
+                        keyboardType='number-pad' style={[styles.textInput,{paddingTop:25,width:'47%',marginHorizontal:6}]} placeholder="Block"/> 
                         <Text style={{color:'red',paddingTop:25}}>*</Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
@@ -181,7 +223,8 @@ class RegisterForm extends React.Component{
                     </View>
                     {/* <ModalDropdown options={country}></ModalDropdown> */}
                     <View>
-                    <Dropdown data={country} value={this.state.country} dropdownPosition={4}   />
+                    <Dropdown data={country} value={this.state.country} fontSize={18} dropdownPosition={4} 
+                    onChangeText={(name)=>{this.setState({country:name})}} />
                     </View>
                      {/* <TextInput onAccessibilityAction={CountryPicker} style={styles.textInput}> */}
                     
@@ -189,7 +232,8 @@ class RegisterForm extends React.Component{
 
                 </View>
                             <View style={{flex:1}} >
-                            <TouchableOpacity onPress={()=>this.setState({visible:false,saveAddress:true})}
+                            <TouchableOpacity onPress={this.validateAddress}
+                            // {/* onPress={()=>this.setState({visible:false,saveAddress:true})} */}
                             style={[styles.Button,{position:'relative',width:100,bottom:10,borderRadius:10,alignSelf:'center'}]}>
                                 <Text style={styles.buttonText}>Save</Text>
                             </TouchableOpacity>
@@ -233,3 +277,4 @@ const Styles=StyleSheet.create({
     }
 })
 export default RegisterForm
+ 

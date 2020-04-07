@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage, ActivityIndicator } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import RadioForm from 'react-native-simple-radio-button'
@@ -18,6 +18,14 @@ export default class UploadDocument extends React.Component{
             radio:1,
             Id:null
         }
+    }
+    componentDidMount(){
+        return(
+            
+                <ActivityIndicator/>
+            
+        )
+
     }
      handleFrontId=()=>{
          var options={
@@ -75,20 +83,18 @@ export default class UploadDocument extends React.Component{
     }
     handleNext=()=>{
         console.log(this.state.value)
-        var idno='Enter the National ID Number'
-        var front='Choose the front image'
-        var back='Choose the back image'
+        var idno='Please check the input fields.'
+        var image='Select the image'
+        
         
         var text=""
         var showSnack=true
-        if(!this.state.Id){
+        if(!this.state.Id || this.state.Id.length<8){
             text=idno
-        }else if(!this.state.frontId){
-            text=front
+        }else if(!this.state.frontId || (!this.state.backId && this.state.radio ==1)){
+            text=image
         }
-        else if(!this.state.backId && this.state.radio ==1){
-            text=back
-        }else{
+        else{
             // AsyncStorage.setItem('userphoto',this.state.source)
             this.props.navigation.navigate('Confirm')
             showSnack=false
@@ -118,8 +124,8 @@ export default class UploadDocument extends React.Component{
                     }
                         }/>
                         </View>
-                    <Text style={Styles.text}>National ID</Text> 
-                    <TextInput onChangeText={(id)=>this.setState({Id:id})}
+                    <Text style={Styles.text}>Passport/DL</Text> 
+                    <TextInput maxLength={15} onChangeText={(id)=>this.setState({Id:id})}
                     style={[Styles.textInput,{width:'57%',borderBottomWidth:2.3}]}/>
                     
                 {/* <Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 

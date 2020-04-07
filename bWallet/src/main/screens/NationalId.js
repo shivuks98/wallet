@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
@@ -14,20 +14,18 @@ export default class NationalId extends React.Component{
         }
     }
     handleNext=()=>{
-        var idno='Enter the National ID Number'
-        var front='Choose the front image'
-        var back='Choose the back image'
+        var idno='Please check your input fields.'
+        var image='Please select image'
+        // var back='Choose the back image'
         
         var text=""
         var showSnack=true
-        if(!this.state.idnumber){
+        if(!this.state.idnumber || this.state.idnumber.length<8){
             text=idno
-        }else if(!this.state.frontId){
-            text=front
+        }else if(!this.state.frontId || !this.state.backId){
+            text=image
         }
-        else if(!this.state.backId){
-            text=back
-        }else{
+       else{
             this.props.navigation.navigate('Document')
             showSnack=false
         }
@@ -98,10 +96,10 @@ export default class NationalId extends React.Component{
     }
     render(){
         return(
-            <View style={Styles.container}>
+            <KeyboardAvoidingView style={Styles.container}>
                 <View style={[Styles.container,{alignItems:'center',paddingTop:'10%'}]}>
                     <Text style={Styles.text}>National ID</Text> 
-                    <TextInput onChangeText={(id)=>this.setState({idnumber:id})}
+                    <TextInput maxLength={15} onChangeText={(id)=>this.setState({idnumber:id})}
                     style={[Styles.textInput,{width:'57%',borderBottomWidth:2.3}]}/>
                     
                 {/* <Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 
@@ -134,7 +132,7 @@ export default class NationalId extends React.Component{
                         <Text style={Styles.buttonText}>NEXT</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }

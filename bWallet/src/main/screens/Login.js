@@ -103,12 +103,12 @@ export default class Login extends React.Component{
                     
                     </ScrollView>
                     <View style={{flex:1}}>
-                            <View style={[styles.Button,{bottom:50}]}>
+                            <View style={[styles.Button,{bottom:40}]}>
                                 <TouchableOpacity onPress={this.login} > 
                                     <Text style={styles.buttonText}>Login</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={[styles.Button,{backgroundColor:'gray'}]}>
+                            <View style={[styles.Button,{backgroundColor:'gray',}]}>
                                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('terms')}> 
                                     <Text style={styles.buttonText}>Register</Text>
                                 </TouchableOpacity>
