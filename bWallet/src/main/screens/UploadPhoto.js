@@ -19,8 +19,8 @@ export default class UploadPhoto extends React.Component{
         if(!this.state.source){
             text=photo
         }else{
-            console.log("from the upload photo "+this.state.source)
-            // AsyncStorage.setItem('userphoto',JSON.stringify(this.state.source))
+            // console.log("from the upload photo "+this.state.source)
+            AsyncStorage.setItem('UserPhoto',JSON.stringify(this.state.source))
             // this.props.navigation.navigate('Confirm')
             this.props.navigation.navigate('Nationalid')
             showSnack=false
@@ -71,16 +71,18 @@ export default class UploadPhoto extends React.Component{
     render(){
         return(
             <View style={Styles.container}>
-                <View style={[Styles.container,{paddingBottom:50,alignItems:'center',}]}>
+                <View style={[Styles.container,{paddingBottom:50,paddingTop:50,alignItems:'center',}]}>
+                    <View style={{width:"50%",height:130,justifyContent:'center',alignItems:'center',borderWidth:2,borderRadius:5,borderColor:'black'}}>
                     { 
-                    !this.state.source  && (<Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 
+                    !this.state.source  && (<Image style={{width:130,height:110,justifyContent:'center'}} 
                 source={require('../../resources/images/fileupload.png')}/>)}
                 { 
-                    this.state.source  && (<Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 
+                    this.state.source  && (<Image style={{width:'100%',height:130,borderRadius:5}} 
                 source={this.state.source}/>)}
                 {/* <Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 
                 source={require('../../resources/images/fileupload.png')}/> */}
-                <Text>Your recent photo</Text>
+                </View>
+                <Text style={Styles.text}>Your recent photo</Text>
                 <View style={{flexDirection:'row',padding:40}}>
                     <TouchableOpacity onPress={this.handleGalary}>
                     <Image style={{width:40,height:30,margin:10,}} 

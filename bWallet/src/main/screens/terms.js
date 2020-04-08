@@ -46,6 +46,7 @@ const styles=StyleSheet.create({
     },
     
     bottomview:{
+        justifyContent:'center',
         flexDirection:'row',
         alignItems:'center',
         marginTop:20

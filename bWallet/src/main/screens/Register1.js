@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Modal,Image,View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView} from 'react-native'
+import {Modal,Image,View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage} from 'react-native'
 import {Dropdown} from 'react-native-material-dropdown'
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
@@ -32,13 +32,16 @@ class CustomAlert extends Component{
     }
 
 }
+var data =[
+    {value:973},{value:965},{value:968},{value:974},{value:966},{value:971}]
 export default class Register1 extends Component{
     constructor(props){
         super(props)
         this.state={
             visible:true,
             mobileNo:null,
-            email:null
+            email:null,
+            code:data[0].value
         }
     }
     validate=()=>{
@@ -56,6 +59,11 @@ export default class Register1 extends Component{
             text=text3
         }
         else {
+            var mobileNumber=this.state.code+this.state.mobileNo
+            var emailId=this.state.email
+            AsyncStorage.setItem('MobileNumber',mobileNumber)
+            AsyncStorage.setItem('EmailId',emailId)
+
         this.props.navigation.navigate('verify')
         shows=true
         }
@@ -73,11 +81,10 @@ export default class Register1 extends Component{
     }
 
     render(){
-        var data =[
-            {value:973},{value:965},{value:968},{value:974},{value:966},{value:971}]
+        
         return(
             
-            // <ScrollView style={styles.container} >
+            // <ScrollView style={styles.container} > this.state.visible
             <View style={{flex:1}}>
                 <Modal transparent={true} visible={false}>
                 <View style={{flex:1,backgroundColor:'#000000aa',justifyContent:'center',alignItems:'center'}}>
@@ -99,10 +106,11 @@ export default class Register1 extends Component{
                     </View>
                     <View style={styles.numberView}>
                         <View style={{width:60}}>
-                            <Dropdown  style={{}}data={data} value={973}/>
+                            <Dropdown  data={data} value={this.state.code} 
+                            onChangeText={(code)=>this.setState({code:code})}/>
                         </View>
                         <TextInput maxLength={9} keyboardType='phone-pad' onChangeText={(mobile)=>this.setState({mobileNo:mobile})}
-                         placeholder="Mobile Number" style={[styles.textInput,{width:150}]}/>
+                         placeholder="Mobile Number" style={[styles.textInput,{width:'80%',marginLeft:30,marginBottom:0,paddingTop:30}]}/>
                     </View>
                     <View style={[styles.textview,{paddingTop:20}]}>
                     <Text style={styles.text}>Enter your Email</Text>

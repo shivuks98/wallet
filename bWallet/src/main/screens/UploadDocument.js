@@ -6,8 +6,8 @@ import RadioForm from 'react-native-simple-radio-button'
 import SnackBar from 'react-native-snackbar'
 
 radio_prop=[
-    {label:'Driving License',value:1},
-    {label:'Passport',value:2}
+    {label:'Driving License',value:'DL'},
+    {label:'Passport',value:"Passport"}
 ]
 export default class UploadDocument extends React.Component{
     constructor(props){
@@ -15,7 +15,7 @@ export default class UploadDocument extends React.Component{
         this.state={
             frontId:null,
             backId:null,
-            radio:1,
+            radio:"DL",
             Id:null
         }
     }
@@ -95,7 +95,17 @@ export default class UploadDocument extends React.Component{
             text=image
         }
         else{
-            // AsyncStorage.setItem('userphoto',this.state.source)
+            AsyncStorage.setItem("DocumentType",this.state.radio)
+            if(this.state.radio=="DL"){
+                var DLNumber=this.state.Id
+                AsyncStorage.setItem("DLNumber",DLNumber)
+                AsyncStorage.setItem("DLFrontImage",JSON.stringify(this.state.frontId))
+                AsyncStorage.setItem('DLBackImage',JSON.stringify(this.state.backId))
+            }
+            else{
+                AsyncStorage.setItem("PassportNumber",this.state.Id)
+                AsyncStorage.setItem("PassportFrontImage",JSON.stringify(this.state.frontId)) 
+            } 
             this.props.navigation.navigate('Confirm')
             showSnack=false
         }
@@ -146,15 +156,15 @@ export default class UploadDocument extends React.Component{
                     </View>
                     <View>
                     <TouchableOpacity onPress={this.handleBackId}>
-                        { this.state.radio == 1 &&
+                        { this.state.radio == "DL" &&
                         !this.state.backId  && (<Image style={Styles.photo} 
                         source={require('../../resources/images/fileupload.png')}/>)}
                         { 
                         this.state.backId  && (<Image style={Styles.photo} 
                         source={this.state.backId}/>)}
                     </TouchableOpacity>
-                    {this.state.radio==1 &&(
-                    <Text style={Styles.text}>ID Back Image</Text>)}
+                    {this.state.radio=="DL" &&(
+                    <Text style={Styles.text}>  ID Back Image</Text>)}
                     </View>
                 </View>
                 </View>

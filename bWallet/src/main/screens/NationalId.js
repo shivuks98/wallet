@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
@@ -26,6 +26,12 @@ export default class NationalId extends React.Component{
             text=image
         }
        else{
+           var NatinalId=this.state.idnumber
+           var IdFrontImage=this.state.frontId
+           var IdBackImage=this.state.backId
+           AsyncStorage.setItem("NationalIdNumber",NatinalId)
+           AsyncStorage.setItem("NationalIdFrontImage",JSON.stringify(IdFrontImage))
+           AsyncStorage.setItem("NationalIdBackImage",JSON.stringify(IdBackImage))
             this.props.navigation.navigate('Document')
             showSnack=false
         }
