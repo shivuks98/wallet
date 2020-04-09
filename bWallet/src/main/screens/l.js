@@ -3,36 +3,37 @@ import { Text, View,Modal,TouchableOpacity,KeyboardAvoidingView,TextInput,Scroll
 // import { TextField } from 'react-native-material-textfield';
 import { Dropdown } from 'react-native-material-dropdown';
 import CountryPicker,{CountryModalPicker} from 'react-native-country-picker-modal'
+// import { Icon } from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/AntDesign';
+// const myIcon = <Icon name="left" size={50} color="#900"/>;
 
 // var d=60
 export default class l extends Component{
   constructor(props){
     super(props)
-    this.state={timer:true}
+    this.state={timer:false}
   }
-  componentDidMount(){
-    setTimeout(()=>{
-      this.setState({timer:false})
-    },7000)
+
+  // componentWillUnmount(){
+    // this.setState({timer:true})
+    // setTimeout(()=>{
+    //   this.setState({timer:true})
+    // },7000)
+    // var pinfo=await AsyncStorage.getItem("PersonalInfo")
+    // var add=await AsyncStorage.getItem("Address")
+    // console.log(JSON.parse(pinfo)[1])
+    // console.log(add)
     
-  }
+  // }
+  
   
 render(){
   return(
-    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-      { this.state.timer ?
-      <Modal>
-    <View style={{backgroundColor:'#000000aa',flex:1,justifyContent:'center',alignItems:'center'}}>
-      <View style={{backgroundColor:'#ffff',flexDirection:'row',width:'80%',height:60,justifyContent:'center',alignItems:'center'}}>
-      <ActivityIndicator size='large' color='red'/>
-      <Text style={{justifyContent:'center',fontSize:20}}>  Loading the Details</Text>
-      </View>
-
+    <View>
+      {/* {myIcon} */}
+      <Icon name="arrowleft" size={50}></Icon>
     </View>
-    </Modal> : <Text>welcome </Text>
-}
-</View>
-  
+      
       
   )
 }

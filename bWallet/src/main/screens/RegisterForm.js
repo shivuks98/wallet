@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,StyleSheet,Button, Image,Modal,ScrollView,Keyboard, KeyboardAvoidingView } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,StyleSheet,Button, Image,Modal,ScrollView,ActivityIndicator, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import styles from '../../resources/styles/Styles'
 import {Dropdown} from 'react-native-material-dropdown'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -9,8 +9,8 @@ import SnackBar from 'react-native-snackbar'
 import CountryPicker,{CountryModalPicker} from 'react-native-country-picker-modal'
 
 var gender=[
-    {label:'Male',value:0},
-    {label:'Female', value:1}
+    {label:'Male',value:"Male"},
+    {label:'Female', value:"Female"}
 ]
 
 var country=[{value:"Bahrain"},{value:"Kuwait"},{value:"Oman"},
@@ -26,10 +26,12 @@ class RegisterForm extends React.Component{
             dob:null,
             firstname:null,
             lastname:null,
-            gender:null,
+            gender:"Male",
             nationality:null,
             saveAddress:false,
             age:null,
+            activity:false,
+            activity1:false,
             
             // Address
             houseNo:null,
@@ -40,6 +42,12 @@ class RegisterForm extends React.Component{
             country:country[0].value,
             
         }
+    }
+    componentDidMount(){
+        this.setState({activity:true})
+        setTimeout(()=>{
+            this.setState({activity:false})
+        },2000)
     }
     validate=()=>{
 
@@ -66,9 +74,19 @@ class RegisterForm extends React.Component{
             text=gender
         }else if(this.state.nationality==null){
             text=nationality
+        }else if(!this.state.saveAddress){
+            text="Add Address"
         }
         else {
-        this.props.navigation.navigate('securityAnswer')
+            this.setState({activity1:true})
+            let keys=[["FirstName",this.state.firstname],["LastName",this.state.lastname],["DOB",this.state.dob],
+            ["Gender",this.state.gender],["Nationality",this.state.nationality]]
+            AsyncStorage.setItem("PersonalInfo",JSON.stringify(keys))
+            setTimeout(()=>{
+                this.setState({activity1:false})
+                this.props.navigation.navigate('securityAnswer')
+            },2000)
+            
         shows=true
         }
         if(shows==false){
@@ -118,6 +136,9 @@ class RegisterForm extends React.Component{
                 duration:SnackBar.LENGTH_LONG
             })
         }else{
+            let keys=[['HouseNo',this.state.houseNo],["FlatNo",this.state.flatNo],['StreetName',this.state.streetName],
+            ["Area",this.state.area],['Block',this.state.block],["Country",this.state.country]]
+            AsyncStorage.setItem("Address",JSON.stringify(keys))
             this.setState({visible:false,saveAddress:true})
         }
         
@@ -188,11 +209,12 @@ class RegisterForm extends React.Component{
                     visible={this.state.visible}
                     >
                         
-                        <View style={Styles.container}>
-                            <View style={{margin:25,borderRadius:5,width:'80%',backgroundColor:'#ffff',flex:1}}>
-                            {/* <Address/> */}
-                            <ScrollView>
-                            <View style={{padding:20,paddingTop:0}}>
+                    <View style={Styles.container}>
+                        <View style={{margin:25,borderRadius:5,width:'80%',backgroundColor:'#ffff',flex:1}}>
+                        {/* <Address/> */}
+                    
+                        <ScrollView>
+                        <KeyboardAvoidingView style={{paddingHorizontal:20}}>
                     <View style={{alignItems:'center'}}>
                     <Image source={require('../../resources/images/home.png')}/>
                     </View>
@@ -230,7 +252,7 @@ class RegisterForm extends React.Component{
                     
                     {/* </TextInput> */}
 
-                </View>
+                </KeyboardAvoidingView>
                             <View style={{flex:1}} >
                             <TouchableOpacity onPress={this.validateAddress}
                             // {/* onPress={()=>this.setState({visible:false,saveAddress:true})} */}
@@ -239,12 +261,13 @@ class RegisterForm extends React.Component{
                             </TouchableOpacity>
                             </View>
                             {/* <Button title='Save' style={{}} onPress={()=>this.setState({visible:false})}></Button> */}
-                            </ScrollView>
+                </ScrollView>
+                
                     </View>
                 </View>
                
             </Modal>
-                </ScrollView>
+                </ScrollView> 
                 
                 <View style={styles.Button }>
                     <TouchableOpacity onPress={this.validate}>
@@ -252,6 +275,25 @@ class RegisterForm extends React.Component{
                         <Text style={styles.buttonText}>Next</Text>
                     </TouchableOpacity>
                 </View> 
+
+                {/*Activity Indicator */}
+                <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={styles.activityText}>Getting Available Countries</Text>
+                        </View>
+                    </View>
+                </Modal>
+                <Modal transparent={true} visible={this.state.activity1}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={styles.activityText}>Authenticating</Text>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         )
         
@@ -271,9 +313,9 @@ const Styles=StyleSheet.create({
         backgroundColor:'red',
         alignItems:"center",
         marginHorizontal:80,
-        borderRadius:10,
-        height:40,
-        bottom:10
+        borderRadius:5,
+        height:50,
+        bottom:0
     }
 })
 export default RegisterForm

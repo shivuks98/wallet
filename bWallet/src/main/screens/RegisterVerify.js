@@ -1,16 +1,17 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
 //on timer expire = "TImer has expired before verification,please regenerate OTP"
-const time=5
+const time=10
 class RegisterVerify extends React.Component{
     constructor(props){
         super(props)
         this.state={
             otp:0,
             timer:time,
-            mobileNumber:null
+            mobileNumber:null,
+            activity:false
         }
     }
     
@@ -24,7 +25,12 @@ class RegisterVerify extends React.Component{
             text=text1
         }
         else {
-        this.props.navigation.navigate('registerForm')
+            this.setState({activity:true})
+            setTimeout(()=>{
+                this.setState({activity:false})
+                this.props.navigation.navigate('registerForm')
+            })
+        
         shows=true
         }
         if(shows==false){
@@ -101,6 +107,16 @@ class RegisterVerify extends React.Component{
                         <Text style={styles.buttonText}>Next</Text>
                     </TouchableOpacity>
                 </View>
+                {/*Activity Indicator */}
+                <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={{justifyContent:'center',fontSize:20,paddingLeft:20}}>Verifying</Text>
+                        </View>
+                    </View>
+                </Modal>
+
             </View>
         )
     }

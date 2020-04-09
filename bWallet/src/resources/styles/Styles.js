@@ -60,6 +60,26 @@ export default StyleSheet.create({
         borderColor:'black',
         borderWidth:1,
         borderRadius:5
-    }
+    },
+    activityContainer:{
+        flex:1,
+        alignItems:"center",
+        backgroundColor:"#000000aa",
+        justifyContent:'center'
+    },
+    innerActivity:{
+        flexDirection:'row',
+        borderRadius:2,
+        backgroundColor:"#ffff",
+        width:'90%',
+        alignItems:'center',
+        height:90,
+        justifyContent:'flex-start',
+        padding:10
+    },
+    activityText:{
+        justifyContent:'center',
+        fontSize:18,
+        paddingHorizontal:20}
     
 })

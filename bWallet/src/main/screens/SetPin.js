@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity, KeyboardAvoidingView,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import SnackBar from 'react-native-snackbar'
 
@@ -8,7 +8,8 @@ export default class SetPin extends React.Component{
         super(props)
         this.state={
             pin:null,
-            confirm:null
+            confirm:null,
+            activity:false
         }
     }
     handleNext=()=>{
@@ -50,8 +51,14 @@ export default class SetPin extends React.Component{
             text="PIN cannot contain same digit consecutively more than 2 times"
         }
         else{
-            this.props.navigation.navigate('UploadPhoto')
-            showSnack=false
+            AsyncStorage.setItem("PIN",this.state.pin)
+            setTimeout(()=>{
+                this.setState({activity:false})
+                this.props.navigation.navigate('UploadPhoto')
+            },3000)
+            // this.props.navigation.navigate('UploadPhoto')
+            // showSnack=false
+            text="You have been successfully registered.\nPlease complete KYC to use our services.\nredirecting"
         }
         if(showSnack){
            SnackBar.show({
@@ -80,7 +87,7 @@ export default class SetPin extends React.Component{
                 <View style={Styles.Button}>
                     <TouchableOpacity  
                     onPress={this.handleNext}>
-                        <Text style={Styles.buttonText}>NEXT</Text>
+                        <Text style={Styles.buttonText}>CREATE ACCOUNT</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>

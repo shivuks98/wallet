@@ -1,6 +1,6 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView } from 'react-native'
-import Styles from '../../resources/styles/Styles'
+import { View,Text,Modal,ActivityIndicator,TextInput,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView } from 'react-native'
+import styles from '../../resources/styles/Styles'
 // import  ImagePicker  from 'react-native-image-picker'
 
 export default class ConfirmPhoto extends React.Component{
@@ -16,7 +16,9 @@ export default class ConfirmPhoto extends React.Component{
             DLFrontImage:null,
             DLBackImage:null,
             PassportNumber:null,
-            PassportFrontImage:null
+            PassportFrontImage:null,
+            activity:false,
+            text:null
 
         }
     }
@@ -66,11 +68,28 @@ export default class ConfirmPhoto extends React.Component{
             
         }
     }
-     
+     confirm=()=>{
+         this.setState({text:'Uploading Photo'})
+         this.setState({activity:true})
+         setTimeout(()=>{
+            this.setState({activity:false})
+            this.setState({text:"Uploading National ID details"})
+            this.setState({activity:true})
+            setTimeout(()=>{
+                this.setState({activity:false})
+                this.setState({text:"Uploading Passport/DL details"})
+                this.setState({activity:true})
+                setTimeout(()=>{
+                this.setState({activity:false})
+                },2000) 
+             },2000)
+         },2000)
+
+     }
     render(){
         return(
-            <View style={Styles.container}>
-                <Text style={[Styles.text,{paddingLeft:20}]}>Recent Photo</Text>
+            <View style={styles.container}>
+                <Text style={[styles.text,{paddingLeft:20}]}>Recent Photo</Text>
                 <View style={design.imageview}>
                         <View style={{justifyContent:'center',flexDirection:'row',borderWidth:1,borderRadius:10,height:90,width:100}}>
                         <Image style={{width:"100%",height:"100%",borderRadius:10}} 
@@ -78,14 +97,14 @@ export default class ConfirmPhoto extends React.Component{
                        {/* source={require('../../resources/images/fileupload.png')} /> */}
                         
                     </View>
-                    {/* <Image style={Styles.photo} source={require('../../resources/images/fileupload.png')} /> */}
+                    {/* <Image style={styles.photo} source={require('../../resources/images/fileupload.png')} /> */}
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('UploadPhoto')}>
                         <Image style={{}} source={require('../../resources/images/edit.png')} />
                     </TouchableOpacity>
                 </View>
                 <View style={design.content}>
-                <Text style={[Styles.text,{paddingLeft:20}]}>National ID</Text>
-        <Text style={[Styles.textInput,Styles.text,{width:'50%',margin:10}]} >{this.state.Nationalid}</Text>
+                <Text style={[styles.text,{paddingLeft:20}]}>National ID</Text>
+        <Text style={[styles.textInput,styles.text,{width:'50%',margin:10}]} >{this.state.Nationalid}</Text>
                 </View>
                 
                 <View style={design.imageview}>
@@ -102,8 +121,8 @@ export default class ConfirmPhoto extends React.Component{
                     </TouchableOpacity>
                 </View>
                 <View style={design.content}>
-                    <Text style={[Styles.text,{paddingLeft:20}]}>Passport/DL</Text>
-                    <Text style={[Styles.textInput,Styles.text,{width:'50%',margin:10}]}>
+                    <Text style={[styles.text,{paddingLeft:20}]}>Passport/DL</Text>
+                    <Text style={[styles.textInput,styles.text,{width:'50%',margin:10}]}>
                         {this.state.DLNumber}{this.state.PassportNumber}</Text>
                 </View>
                 
@@ -123,18 +142,44 @@ export default class ConfirmPhoto extends React.Component{
                         {/* source={require('../../resources/images/fileupload.png')} /> */}
                 </View>
                     }
-                    {/* <Image style={Styles.photo} source={require('../../resources/images/fileupload.png')} /> */}
+                    {/* <Image style={styles.photo} source={require('../../resources/images/fileupload.png')} /> */}
                     <TouchableOpacity onPress={()=>this.props.navigation.navigate('Document')}>
                         <Image source={require('../../resources/images/edit.png')} />
                     </TouchableOpacity>
                 </View>
                
                 
-                <View style={Styles.Button}>
-                    <TouchableOpacity >
-                        <Text style={Styles.buttonText}>CONFIRM</Text>
+                <View style={styles.Button}>
+                    <TouchableOpacity onPress={(this.confirm)} >
+                        <Text style={styles.buttonText}>CONFIRM</Text>
                     </TouchableOpacity>
                 </View>
+                {/*Activity Indicator */}
+                <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={styles.activityText}>{this.state.text}</Text>
+                        </View>
+                    </View>
+                </Modal>
+                {/* <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={styles.activityText}>Authenticating</Text>
+                        </View>
+                    </View>
+                </Modal>
+                <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={styles.activityText}>Authenticating</Text>
+                        </View>
+                    </View>
+                </Modal> */}
+
             </View>
         )
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Modal,Image,View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage} from 'react-native'
+import {Modal,Image,View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage, ActivityIndicator} from 'react-native'
 import {Dropdown} from 'react-native-material-dropdown'
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
@@ -41,7 +41,8 @@ export default class Register1 extends Component{
             visible:true,
             mobileNo:null,
             email:null,
-            code:data[0].value
+            code:data[0].value,
+            activity:false
         }
     }
     validate=()=>{
@@ -59,12 +60,17 @@ export default class Register1 extends Component{
             text=text3
         }
         else {
+            this.setState({activity:true})
+        
             var mobileNumber=this.state.code+this.state.mobileNo
             var emailId=this.state.email
             AsyncStorage.setItem('MobileNumber',mobileNumber)
             AsyncStorage.setItem('EmailId',emailId)
-
-        this.props.navigation.navigate('verify')
+            setTimeout(()=>{
+                this.setState({activity:false})
+                this.props.navigation.navigate('verify')
+            },3000)
+        
         shows=true
         }
         if(shows==false){
@@ -78,6 +84,9 @@ export default class Register1 extends Component{
             
         })
     }
+    }
+    componentWillUnmount(){
+        
     }
 
     render(){
@@ -124,6 +133,17 @@ export default class Register1 extends Component{
                     </TouchableOpacity>
                     </View>       
                 </KeyboardAvoidingView>
+
+                {/*Activity Indicator */}
+                <Modal transparent={true} visible={this.state.activity}>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.innerActivity}>
+                            <ActivityIndicator size='large' color="red"/>
+                            <Text style={{justifyContent:'center',fontSize:20,paddingLeft:20}}>Request is being processed</Text>
+                        </View>
+                    </View>
+                </Modal>
+
                 
                 </View>
                 //  </ScrollView>
@@ -135,7 +155,8 @@ const Styles=StyleSheet.create({
         // width:100,
         flex:1,
         alignItems:"center",
-        backgroundColor:"#000000aa"
+        backgroundColor:"#000000aa",
+        justifyContent:'center'
 
     },
     savebtn:{
