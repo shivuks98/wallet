@@ -1,6 +1,7 @@
 import React from 'react'
-import { View,Text,Modal,ActivityIndicator,TextInput,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView } from 'react-native'
+import { View,Text,Modal,ActivityIndicator,BackHandler,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView } from 'react-native'
 import styles from '../../resources/styles/Styles'
+import SnackBar from 'react-native-snackbar'
 // import  ImagePicker  from 'react-native-image-picker'
 
 export default class ConfirmPhoto extends React.Component{
@@ -23,6 +24,8 @@ export default class ConfirmPhoto extends React.Component{
         }
     }
     componentDidMount=async()=>{
+        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+    
 // alert('hi')
         var key=[],val=[]
         var keys=['UserPhoto','NationalIdNumber','NationalIdFrontImage','NationalIdBackImage',
@@ -67,6 +70,22 @@ export default class ConfirmPhoto extends React.Component{
         } catch (error) {
             
         }
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleback)
+    }
+    handleback=()=>{
+        // ToastAndroid.show("back button pressed",ToastAndroid.LONG)
+        SnackBar.show({
+            text:"It is mandatory to complete KYC.Please complete the process.",
+            duration:SnackBar.LENGTH_INDEFINITE,
+            action:{
+                text:"OK",
+                textColor:'red'
+            }
+        })
+        return true
+        
     }
      confirm=()=>{
          this.setState({text:'Uploading Photo'})

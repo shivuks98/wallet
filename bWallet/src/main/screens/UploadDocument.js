@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage, ActivityIndicator } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage, ActivityIndicator,BackHandler } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import RadioForm from 'react-native-simple-radio-button'
@@ -20,12 +20,23 @@ export default class UploadDocument extends React.Component{
         }
     }
     componentDidMount(){
-        return(
-            
-                <ActivityIndicator/>
-            
-        )
-
+        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleback)
+    }
+    handleback=()=>{
+        // ToastAndroid.show("back button pressed",ToastAndroid.LONG)
+        SnackBar.show({
+            text:"It is mandatory to complete KYC.Please complete the process.",
+            duration:SnackBar.LENGTH_INDEFINITE,
+            action:{
+                text:"OK",
+                textColor:'red'
+            }
+        })
+        return true
+        
     }
      handleFrontId=()=>{
          var options={
@@ -39,6 +50,14 @@ export default class UploadDocument extends React.Component{
          ImagePicker.showImagePicker(options,(response)=>{
             //  console.log(response)
              if(response.didCancel){
+                 SnackBar.show({
+                     text:"Please try again to upload the image",
+                     duration:SnackBar.LENGTH_INDEFINITE,
+                     action:{
+                         text:'OK',
+                         textColor:'red'
+                     }
+                 })
                  console.log('User cancelled image picker')
              }else if(response.error){
                  console.log('ImagePicker Error',response.error)

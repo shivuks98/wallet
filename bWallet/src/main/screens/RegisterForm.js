@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,StyleSheet,Button, Image,Modal,ScrollView,ActivityIndicator, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,StyleSheet,Button,ToastAndroid,BackHandler, Image,Modal,ScrollView,ActivityIndicator, KeyboardAvoidingView, AsyncStorage } from 'react-native'
 import styles from '../../resources/styles/Styles'
 import {Dropdown} from 'react-native-material-dropdown'
 import ModalDropdown from 'react-native-modal-dropdown'
@@ -40,14 +40,30 @@ class RegisterForm extends React.Component{
             area:null,
             block:null,
             country:country[0].value,
+            backCount:0
             
         }
     }
     componentDidMount(){
+        BackHandler.addEventListener("hardwareBackPress",this.handleBack)
         this.setState({activity:true})
         setTimeout(()=>{
             this.setState({activity:false})
         },2000)
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleBack)
+    }
+    handleBack=()=>{
+        // this.state.visible==false?
+        // this.props.navigation.navigate("register1"):
+        if(this.state.backCount==0){
+        ToastAndroid.show("Divulging Address is mandatory. Press again to exit",ToastAndroid.LONG)
+        this.setState({backCount:1})
+        }else
+        {this.props.navigation.navigate("register1")
+        this.setState({visible:false})}
+        return true
     }
     validate=()=>{
 
@@ -205,6 +221,15 @@ class RegisterForm extends React.Component{
                     </View>
                     
                     <Modal transparent={true} 
+                        onRequestClose={()=>{
+                        if(this.state.backCount==0){
+                            ToastAndroid.show("Divulging Address is mandatory. Press again to exit",ToastAndroid.SHORT)
+                            this.setState({backCount:1})
+                            }else
+                            {
+                            this.setState({visible:false,backCount:0})
+                        }
+                    }}
                     // visible={true}
                     visible={this.state.visible}
                     >

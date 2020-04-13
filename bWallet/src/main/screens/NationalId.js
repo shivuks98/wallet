@@ -1,5 +1,5 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView, AsyncStorage } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView, AsyncStorage,BackHandler } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
@@ -12,6 +12,24 @@ export default class NationalId extends React.Component{
             backId:null,
             idnumber:null
         }
+    }componentDidMount(){
+        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleback)
+    }
+    handleback=()=>{
+        // ToastAndroid.show("back button pressed",ToastAndroid.LONG)
+        SnackBar.show({
+            text:"It is mandatory to complete KYC.Please complete the process.",
+            duration:SnackBar.LENGTH_INDEFINITE,
+            action:{
+                text:"OK",
+                textColor:'red'
+            }
+        })
+        return true
+        
     }
     handleNext=()=>{
         var idno='Please check your input fields.'

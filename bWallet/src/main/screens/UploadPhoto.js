@@ -1,15 +1,40 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,BackHandler,ToastAndroid } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
+import {useNavigation} from '@react-navigation/native';
+import Navigation from '@react-navigation/stack'
+
 
 export default class UploadPhoto extends React.Component{
     constructor(props){
         super(props)
+        // Navigation.event().bindComponent(this)
         this.state={
             source:null
         }
+    }
+
+    componentDidMount(){
+        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleback)
+    }
+    handleback=()=>{
+        const navigation=useNavigation();
+        // ToastAndroid.show("back button pressed",ToastAndroid.LONG)
+        SnackBar.show({
+            text:"It is mandatory to complete KYC.Please complete the process.",
+            duration:SnackBar.LENGTH_INDEFINITE,
+            action:{
+                text:"OK",
+                textColor:'red'
+            }
+        })
+        return true
+        
     }
     handleNext=()=>{
         var photo='Select a image'

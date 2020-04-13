@@ -1,16 +1,36 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity, KeyboardAvoidingView,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,BackHandler, KeyboardAvoidingView,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import SnackBar from 'react-native-snackbar'
-
+// Please click BACK again to exit sign up process
 export default class SetPin extends React.Component{
     constructor(props){
         super(props)
         this.state={
             pin:null,
             confirm:null,
-            activity:false
+            activity:false,
+            backcount:1
         }
+    }
+    componentDidMount(){
+        BackHandler.addEventListener("hardwareBackPress",this.handleBack)
+    }
+    componentWillUnmount(){
+        BackHandler.removeEventListener("hardwareBackPress",this.handleBack)
+    }
+    handleBack=()=>{
+        this.state.backcount==2 ? this.props.navigation.navigate("Login"):
+        SnackBar.show({
+            text:'Please click BACK again to exit sign up process',
+            duration:SnackBar.LENGTH_INDEFINITE,
+            action:{
+                text:"OK",
+                textColor:"red"
+            }
+        }) ,
+        this.setState({backcount:2})
+        return true
     }
     handleNext=()=>{
         var Pin='Enter the New PIN'
