@@ -55,14 +55,9 @@ class RegisterForm extends React.Component{
         BackHandler.removeEventListener("hardwareBackPress",this.handleBack)
     }
     handleBack=()=>{
-        // this.state.visible==false?
-        // this.props.navigation.navigate("register1"):
-        if(this.state.backCount==0){
-        ToastAndroid.show("Divulging Address is mandatory. Press again to exit",ToastAndroid.LONG)
-        this.setState({backCount:1})
-        }else
-        {this.props.navigation.navigate("register1")
-        this.setState({visible:false})}
+        
+        this.props.navigation.navigate("register1")
+       
         return true
     }
     validate=()=>{
@@ -185,11 +180,12 @@ class RegisterForm extends React.Component{
                     
                     <Text style={[styles.text,{paddingBottom:15}]}>Gender</Text>
                     
-                    <RadioForm radio_props={gender}
+                    <RadioForm radio_props={gender} 
                     labelHorizontal={true}
                      formHorizontal={true} 
+                     
                     //  onSelect={}
-                    // initial={0}
+                    initial={0}
                       labelStyle={{paddingLeft:10,paddingRight:'30%'}}
                      onPress={(value)=>this.setState({gender:value})}
                      />

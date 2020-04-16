@@ -106,13 +106,15 @@ export default StyleSheet.create({
     },
     regform:{
         alignSelf:'stretch',
-        paddingTop:150,
-        flex:1
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
         
     },
     ImageIconStyle: {
-        height: 50,
-        width: 50,
+      marginTop:10,
+        height: 30,
+        width: 30,
         resizeMode : 'stretch',
       
      },

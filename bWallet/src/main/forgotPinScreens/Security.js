@@ -1,21 +1,36 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-native-material-dropdown';
 import {
-  StyleSheet,Text,View,Image,TextInput,TouchableWithoutFeedback,Keyboard
+  StyleSheet,Text,View,Image,TextInput,TouchableWithoutFeedback,Keyboard,Modal,ActivityIndicator,BackHandler
 
 } from 'react-native';
-//  import  Drop from './Drop'
+ import  Drop from './Drop'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
-import styles from '../forgotPinScreens/styles/styles'
-export default class Def extends React.Component
+import styles from './styles/styles'
+export default class Security extends React.Component
 {
-          constructor(props)
-          {
+         
+          constructor(props) {
             super(props)
-            this.state={
-              ans:null
-            }
+            this.state={ans:null,timer:true,visible:false}
+            this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+          }
+          componentDidMount() {
+            
+          BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+          }
+          componentWillUnmount() {
+           
+            BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+          }
+          handleBackButtonClick() {
+            
+            
+            
+            this.props.navigation.navigate('Forgot PIN?');
+            
+            return true;
           }
           validate=()=>{
        
@@ -31,7 +46,13 @@ export default class Def extends React.Component
                 text=text2
             }
             else {
-            this.props.navigation.navigate("Set Pin")
+              this.setState({visible:true})
+                  setTimeout(()=>{
+                    this.setState({visible:false})
+                    this.props.navigation.navigate("Set Pin")
+                  },1000)
+
+          
             shows=true
             }
             if(shows==false){
@@ -54,8 +75,9 @@ export default class Def extends React.Component
         Keyboard.dismiss();
         console.log('dismissed keyboard')
       }}>
+         
     <View style={styles.regform}>
-      <View style={{paddingLeft:50,paddingRight:50,}}>
+      <View style={{padding:20}}>
         <Text style={{fontSize:18}}>What is the name of your first school?</Text>
 
         <View style={styles.numberView1}>
@@ -78,7 +100,16 @@ export default class Def extends React.Component
             </Text>
           </TouchableOpacity>
         </View>
+        <Modal transparent={true} visible={this.state.visible}>
+            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
+              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+                <ActivityIndicator size='large' color='red'/>
+                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Processing</Text>
+              </View>
+            </View>
+          </Modal>
     </View>
+     
     </TouchableWithoutFeedback>
 
       );

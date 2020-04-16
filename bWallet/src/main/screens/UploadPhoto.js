@@ -3,14 +3,18 @@ import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,BackHandler,Toa
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
-import {useNavigation} from '@react-navigation/native';
-import Navigation from '@react-navigation/stack'
+import sharedData from 'react-native-shared-preferences'
+import {requestMultiple,PERMISSIONS} from 'react-native-permissions'
 
+// var d=60
+// requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then(()=>{
+  
+// })
 
 export default class UploadPhoto extends React.Component{
     constructor(props){
         super(props)
-        // Navigation.event().bindComponent(this)
+        
         this.state={
             source:null
         }
@@ -23,7 +27,6 @@ export default class UploadPhoto extends React.Component{
         BackHandler.removeEventListener("hardwareBackPress",this.handleback)
     }
     handleback=()=>{
-        const navigation=useNavigation();
         // ToastAndroid.show("back button pressed",ToastAndroid.LONG)
         SnackBar.show({
             text:"It is mandatory to complete KYC.Please complete the process.",
@@ -45,6 +48,8 @@ export default class UploadPhoto extends React.Component{
             text=photo
         }else{
             // console.log("from the upload photo "+this.state.source)
+            // sharedData.setItem('UserPhoto',JSON.stringify(this.state.source))
+            
             AsyncStorage.setItem('UserPhoto',JSON.stringify(this.state.source))
             // this.props.navigation.navigate('Confirm')
             this.props.navigation.navigate('Nationalid')

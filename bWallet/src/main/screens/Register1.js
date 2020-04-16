@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Modal,Image,View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage, ActivityIndicator} from 'react-native'
+import {Modal,Image,View,Text,TextInput,BackHandler,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage, ActivityIndicator} from 'react-native'
 import {Dropdown} from 'react-native-material-dropdown'
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
@@ -85,8 +85,15 @@ export default class Register1 extends Component{
         })
     }
     }
+    componentDidMount(){
+        BackHandler.addEventListener("hardwareBackPress",this.handleBack)
+    }
     componentWillUnmount(){
-        
+        BackHandler.removeEventListener("hardwareBackPress",this.handleBack)
+    }
+    handleBack=()=>{
+        this.props.navigation.navigate('Login')
+        return true
     }
 
     render(){
@@ -95,7 +102,7 @@ export default class Register1 extends Component{
             
             // <ScrollView style={styles.container} > this.state.visible
             <View style={{flex:1}}>
-                <Modal transparent={true} visible={false}>
+                <Modal transparent={true} visible={this.state.visible}>
                 <View style={{flex:1,backgroundColor:'#000000aa',justifyContent:'center',alignItems:'center'}}>
                     <View style={{backgroundColor:'#ffff',width:'85%',height:300}}>
                         <CustomAlert/>

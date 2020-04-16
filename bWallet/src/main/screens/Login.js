@@ -3,7 +3,7 @@ import {View,Modal, Image,Text,TouchableOpacity,TextInput,ScrollView,KeyboardAvo
 import {Dropdown} from 'react-native-material-dropdown'
 // import ModalDropdown from 'react-native-modal-dropdown'
 import SnackBar from 'react-native-snackbar'
-
+import Menu, {MenuItem}from "react-native-material-menu"
 import styles from '../../resources/styles/Styles'
 
 var data =[
@@ -13,18 +13,40 @@ var data =[
 export default class Login extends React.Component{
     constructor(props){
         super(props)
+        this.props.navigation.setOptions({headerRight:()=>
+            <View style={{flexDirection:'row',alignItems:'center'}}><Image style={{height:30,width:100,}}
+            source={require('../../resources/images/bWalletC.png')}/>
+                <Menu ref={this.setMenuRef} button={ <TouchableOpacity onPress={this.showMenu}><Image style={{height:20,width:20,margin:10,}}
+                source={require('../../resources/images/globe.png')}/></TouchableOpacity>}>
+                    <MenuItem onPress={()=>this.setState({language:true})}>Change Language</MenuItem>
+                </Menu>
+            
+            </View>})
         this.state={
             value:989,
             mobileNo:null,
             pin:null,
-            visible:true
+            visible:true,
+            language:false
             
         }
     }
+    _menu=null
+    setMenuRef=ref=>{
+        this._menu=ref
+    }
+    hideMenu=()=>{
+        this._menu.hide();
+    }
+    showMenu=()=>{
+        this._menu.show();
+    }
+    
+    
     componentDidMount(){
         setTimeout(()=>{
             this.setState({visible:false})
-        },4000)
+        },2000)
     }
     login=()=>{
         if(this.state.mobileNo && this.state.pin){
@@ -54,13 +76,25 @@ export default class Login extends React.Component{
     {
         return(
                <KeyboardAvoidingView style={styles.container} behavior="padding" >
-                   
-                   <Modal
-                   visible={this.state.visible}
-                //    visible={false}
-                   >
+                {/* Language modal */}
+                <Modal transparent={true} visible={this.state.language}>
+                    <View style={{flex:1,backgroundColor:'#000000aa',justifyContent:'center',alignItems:'center'}}>
+                        <View style={{backgroundColor:'#ffff',width:'80%',height:150,padding:20}}>
+                        <Text style={{fontWeight:"bold",fontSize:20,color:'red'}}>Pick a Language</Text>
+                        <TouchableOpacity onPress={()=>this.setState({language:false})}>
+                            <Text style={{paddingTop:10,fontSize:18,color:'red'}}>English/</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.setState({language:false})}>
+                            <Text style={{paddingTop:10,fontSize:18,color:'red'}}>Arabic/</Text>
+                        </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
+
+                   <Modal visible={this.state.visible}>
                        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                        <Image style={{height:'100%',width:"100%"}} source={require('../../resources/images/bwalletScreen.png')}/>
+                        <Image style={{height:'100%',width:"100%"}} source={require('../../resources/images/Screen.png')}/>
                    </View>
                    </Modal>
                     <ScrollView>
@@ -77,8 +111,8 @@ export default class Login extends React.Component{
                         </View>
                         <TextInput maxLength={9} autoFocus={true} returnKeyType={"next"} 
                         onSubmitEditing={()=>this.nextInput.focus()}
-                        keyboardType='phone-pad'  placeholder="Mobile Number" 
-                        style={[styles.textInput,{width:'90%',fontSize:20,fontWeight:'bold'}]}
+                        keyboardType='numeric'  placeholder="Mobile Number" 
+                        style={[styles.textInput,{width:'90%',fontSize:18,fontWeight:'bold',paddingTop:20}]}
                         onChangeText={(number)=>{this.setState({mobileNo:number})
                         }}/>
                     </View>

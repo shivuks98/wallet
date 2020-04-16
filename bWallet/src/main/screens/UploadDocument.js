@@ -101,7 +101,7 @@ export default class UploadDocument extends React.Component{
         })
     }
     handleNext=()=>{
-        console.log(this.state.value)
+        // console.log(this.state.value)
         var idno='Please check the input fields.'
         var image='Select the image'
         
@@ -114,15 +114,15 @@ export default class UploadDocument extends React.Component{
             text=image
         }
         else{
-            AsyncStorage.setItem("DocumentType",this.state.radio)
+            AsyncStorage.setItem("DocumentType",JSON.stringify(this.state.radio))
             if(this.state.radio=="DL"){
                 var DLNumber=this.state.Id
-                AsyncStorage.setItem("DLNumber",DLNumber)
+                AsyncStorage.setItem("DLNumber",JSON.stringify(DLNumber))
                 AsyncStorage.setItem("DLFrontImage",JSON.stringify(this.state.frontId))
                 AsyncStorage.setItem('DLBackImage',JSON.stringify(this.state.backId))
             }
             else{
-                AsyncStorage.setItem("PassportNumber",this.state.Id)
+                AsyncStorage.setItem("PassportNumber",JSON.stringify(this.state.Id))
                 AsyncStorage.setItem("PassportFrontImage",JSON.stringify(this.state.frontId)) 
             } 
             this.props.navigation.navigate('Confirm')

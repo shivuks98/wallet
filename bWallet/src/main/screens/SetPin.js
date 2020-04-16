@@ -10,7 +10,7 @@ export default class SetPin extends React.Component{
             pin:null,
             confirm:null,
             activity:false,
-            backcount:1
+            backCount:0
         }
     }
     componentDidMount(){
@@ -20,16 +20,20 @@ export default class SetPin extends React.Component{
         BackHandler.removeEventListener("hardwareBackPress",this.handleBack)
     }
     handleBack=()=>{
-        this.state.backcount==2 ? this.props.navigation.navigate("Login"):
-        SnackBar.show({
-            text:'Please click BACK again to exit sign up process',
-            duration:SnackBar.LENGTH_INDEFINITE,
-            action:{
-                text:"OK",
-                textColor:"red"
-            }
-        }) ,
-        this.setState({backcount:2})
+        if(this.state.backCount==0){
+            SnackBar.show({
+                text:"Please click BACK again to exit sigh up process",
+                duration:SnackBar.LENGTH_INDEFINITE,
+                action:{
+                    text:"OK",
+                    textColor:'red'
+                }
+            })
+            this.setState({backCount:1})
+        }else this.props.navigation.navigate("Login")
+        setTimeout(()=>{
+            this.setState({backCount:0})
+        },2000)
         return true
     }
     handleNext=()=>{

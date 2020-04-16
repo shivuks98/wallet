@@ -28,7 +28,7 @@ export default class terms extends Component{
                         
                     </View>
                     <View style={styles.view1}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>this.props.navigation.navigate("Login")}>
                         <Text style={styles.btntext}>I DONOT AGREE</Text>
                         </TouchableOpacity>
                     </View>

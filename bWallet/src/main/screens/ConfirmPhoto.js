@@ -1,8 +1,10 @@
 import React from 'react'
-import { View,Text,Modal,ActivityIndicator,BackHandler,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView } from 'react-native'
+import { View,Text,Modal,ActivityIndicator,BackHandler,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView,ToastAndroid } from 'react-native'
 import styles from '../../resources/styles/Styles'
 import SnackBar from 'react-native-snackbar'
+import shared from 'react-native-shared-preferences'
 // import  ImagePicker  from 'react-native-image-picker'
+
 
 export default class ConfirmPhoto extends React.Component{
     constructor(props){
@@ -19,32 +21,44 @@ export default class ConfirmPhoto extends React.Component{
             PassportNumber:null,
             PassportFrontImage:null,
             activity:false,
-            text:null
+            text:null,
+            loading:true
 
         }
+    
     }
+    
+    // static name=async()=> {
+       
+        
+    // // }
     componentDidMount=async()=>{
-        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+        
     
 // alert('hi')
         var key=[],val=[]
         var keys=['UserPhoto','NationalIdNumber','NationalIdFrontImage','NationalIdBackImage',
         'DocumentType',]
         try {
-            var uri=await AsyncStorage.multiGet(keys,(err,stores)=>{
-                stores.map((result,i,store)=>{
-                    key[i]=store[i][0]
-                    val[i]=store[i][1]
+            let photo=await AsyncStorage.getItem("UserPhoto")
+            let nid=await AsyncStorage.getItem("NationalIdNumber")
+            let nf=await AsyncStorage.getItem("NationalIdFrontImage")
+            let nb=await AsyncStorage.getItem("NationalIdBackImage")
+            let dt=await AsyncStorage.getItem("DocumentType")
+            // var uri=await AsyncStorage.multiGet(keys,(err,stores)=>{
+            //     stores.map((result,i,store)=>{
+            //         key[i]=store[i][0]
+            //         val[i]=store[i][1]
                     
-                })
-            })
+            //     })
+            // })
             console.log(key,val)
             this.setState({
-                photo:JSON.parse(val[0]),
-                Nationalid:JSON.parse(val[1]),
-                NationalIdFrontImage:JSON.parse(val[2]),
-                NationaIdBackImage:JSON.parse(val[3]),
-                DocumentType:(val[4])
+                photo:JSON.parse(photo),
+                Nationalid:JSON.parse(nid),
+                NationalIdFrontImage:JSON.parse(nf),
+                NationaIdBackImage:JSON.parse(nb),
+                DocumentType:(JSON.parse(dt))
 
             })
             if(this.state.DocumentType=="DL"){
@@ -52,7 +66,7 @@ export default class ConfirmPhoto extends React.Component{
                let frontImage=await AsyncStorage.getItem("DLFrontImage")
                let backImage=await AsyncStorage.getItem('DLBackImage')
                this.setState({
-                    DLNumber:id,
+                    DLNumber:JSON.parse(id),
                     DLFrontImage:JSON.parse(frontImage),
                     DLBackImage:JSON.parse(backImage)
                })
@@ -62,15 +76,32 @@ export default class ConfirmPhoto extends React.Component{
                 let id=await AsyncStorage.getItem("PassportNumber")
                 let frontImage=await AsyncStorage.getItem("PassportFrontImage")
                 this.setState({
-                    PassportNumber:id,
+                    PassportNumber:JSON.parse(id),
                     PassportFrontImage:JSON.parse(frontImage)
                 })
              }
+             this.setState({loading:false})
             // console.log(this.state.photo)
         } catch (error) {
             
         }
+        BackHandler.addEventListener("hardwareBackPress",this.handleback)
+        
     }
+    // componentDidMount(){
+    //     var names=[]
+    //     shared.getItem("UserPhoto",function(name){
+    //         names[0]=JSON.parse(name)
+    //         console.log(JSON.parse(name))
+    //         // this.setState({photo:names.uri})
+    //         // console.log(names[0].uri +"  inside")
+            
+    //     })
+    //     console.log(names.uri +"  outside")
+    //     // this.setState({photo:JSON.parse(names)})
+    //     // console.log(this.state.photo+"  from photo")
+    // }
+    
     componentWillUnmount(){
         BackHandler.removeEventListener("hardwareBackPress",this.handleback)
     }
@@ -92,14 +123,16 @@ export default class ConfirmPhoto extends React.Component{
          this.setState({activity:true})
          setTimeout(()=>{
             this.setState({activity:false})
-            this.setState({text:"Uploading National ID details"})
+            this.setState({text:"Uploading National ID"})
             this.setState({activity:true})
             setTimeout(()=>{
                 this.setState({activity:false})
-                this.setState({text:"Uploading Passport/DL details"})
+                this.setState({text:"Uploading Passport/DL"})
                 this.setState({activity:true})
                 setTimeout(()=>{
                 this.setState({activity:false})
+                this.props.navigation.navigate("Login")
+                ToastAndroid.show("Registered Successfully",ToastAndroid.LONG)
                 },2000) 
              },2000)
          },2000)
@@ -108,6 +141,8 @@ export default class ConfirmPhoto extends React.Component{
     render(){
         return(
             <View style={styles.container}>
+                {this.state.loading && <ActivityIndicator/> }
+               
                 <Text style={[styles.text,{paddingLeft:20}]}>Recent Photo</Text>
                 <View style={design.imageview}>
                         <View style={{justifyContent:'center',flexDirection:'row',borderWidth:1,borderRadius:10,height:90,width:100}}>
@@ -146,6 +181,8 @@ export default class ConfirmPhoto extends React.Component{
                 </View>
                 
                 <View style={design.imageview}>
+                    {this.state.DocumentType==null &&
+                        <View style={{flexDirection:'row',borderWidth:1,borderRadius:10,margin:1,height:90,width:100}}></View>}
                     {this.state.DocumentType=="DL" && 
                     <View style={{flexDirection:'row',borderWidth:1,borderRadius:10,margin:1,height:90,width:100}}>
                         <Image style={{marginLeft:1,width:48,height:90,borderBottomLeftRadius:10,borderTopLeftRadius:10}} source={this.state.DLFrontImage}/>
@@ -182,26 +219,13 @@ export default class ConfirmPhoto extends React.Component{
                         </View>
                     </View>
                 </Modal>
-                {/* <Modal transparent={true} visible={this.state.activity}>
-                    <View style={styles.activityContainer}>
-                        <View style={styles.innerActivity}>
-                            <ActivityIndicator size='large' color="red"/>
-                            <Text style={styles.activityText}>Authenticating</Text>
-                        </View>
-                    </View>
-                </Modal>
-                <Modal transparent={true} visible={this.state.activity}>
-                    <View style={styles.activityContainer}>
-                        <View style={styles.innerActivity}>
-                            <ActivityIndicator size='large' color="red"/>
-                            <Text style={styles.activityText}>Authenticating</Text>
-                        </View>
-                    </View>
-                </Modal> */}
-
+                
+                
             </View>
         )
     }
+    
+    
 }
 const design=StyleSheet.create({
     imageview:{

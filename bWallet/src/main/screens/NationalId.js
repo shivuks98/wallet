@@ -3,6 +3,8 @@ import { View,Text,TextInput,TouchableOpacity,Image, KeyboardAvoidingView, Async
 import Styles from '../../resources/styles/Styles'
 import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
+import {requestMultiple,PERMISSIONS} from 'react-native-permissions'
+
 
 export default class NationalId extends React.Component{
     constructor(props){
@@ -47,7 +49,7 @@ export default class NationalId extends React.Component{
            var NatinalId=this.state.idnumber
            var IdFrontImage=this.state.frontId
            var IdBackImage=this.state.backId
-           AsyncStorage.setItem("NationalIdNumber",NatinalId)
+           AsyncStorage.setItem("NationalIdNumber",JSON.stringify(NatinalId))
            AsyncStorage.setItem("NationalIdFrontImage",JSON.stringify(IdFrontImage))
            AsyncStorage.setItem("NationalIdBackImage",JSON.stringify(IdBackImage))
             this.props.navigation.navigate('Document')
@@ -65,6 +67,8 @@ export default class NationalId extends React.Component{
         }
     }
      handleFrontId=()=>{
+        requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then(()=>{
+        })
          var options={
              title:'Add Photo!',
             
@@ -92,6 +96,7 @@ export default class NationalId extends React.Component{
          })
      }
      handleBackId=()=>{
+        
         var options={
             title:'Add Photo!',
            

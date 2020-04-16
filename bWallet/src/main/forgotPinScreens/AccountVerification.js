@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,Text,View,Image,TextInput,TouchableOpacity,TouchableWithoutFeedback,Keyboard
+  StyleSheet,Text,View,Image,TextInput,TouchableOpacity,TouchableWithoutFeedback,Keyboard,Modal,ActivityIndicator, AsyncStorage
 
 } from 'react-native';
-import styles from '../forgotPinScreens/styles/styles'
+import styles from './styles/styles'
 import Snackbar from 'react-native-snackbar';
-export default class Def extends React.Component {
+export default class AccountVerification extends React.Component {
     constructor(props){
         super(props)
         this.state={
         pin:0,
-        timer:60
+        timer:60,time:true,
+        visible:false,
+        mobileNo:null
+        // activity:false
       }
       }
+      
 
-      componentDidMount(){
+      componentDidMount=async()=>{
+        let number=await AsyncStorage.getItem("MobileNo")
+        this.setState({mobileNo:JSON.parse(number)})
         this.interval=setInterval(
             ()=>this.setState((prevState)=>({timer:prevState.timer-1}) ),1000
         )
@@ -43,7 +49,12 @@ export default class Def extends React.Component {
                     text=text1
                 }
                 else {
-                this.props.navigation.navigate("Security Questions")
+                  this.setState({visible:true})
+                  setTimeout(()=>{
+                    this.setState({visible:false})
+                    this.props.navigation.navigate("Security Questions")
+                  },1000)
+        //         this.props.navigation.navigate("Security Questions")
                 shows=true
                 }
                 if(shows==false){
@@ -67,11 +78,12 @@ export default class Def extends React.Component {
         Keyboard.dismiss();
         console.log('dismissed keyboard')
       }}>
+       
             <View style={styles.regform}>
                 <View style={{paddingLeft:60,paddingRight:50}}>
                 <Text>A Verification code has been sent to{"\n"}
                      your registered mobile number {"\n"}
-                     +973111111111 </Text>
+                     +{this.state.mobileNo} </Text>
                  <Text style={styles.title1}>Please enter it below</Text>
 
                 <TextInput maxLength={6} style={styles.textinput1} placeholder="XXXXXX"
@@ -85,7 +97,7 @@ export default class Def extends React.Component {
                  {this.state.timer !=0 &&(
                        <View style={{flexDirection:'row'}}> 
                        <Image 
-                          source={require('../forgotPinScreens/images/refresh.png')} 
+                          source={require('../../resources/images/restart.png')} 
                           style={styles.ImageIconStyle} 
                           />
                        <Text style={[styles.text,{color:'red',textAlign:'right',paddingLeft:30,paddingTop:10}]}>
@@ -95,7 +107,7 @@ export default class Def extends React.Component {
                        <View style={{flexDirection:'row'}}> 
                        <TouchableOpacity style={{flexDirection:'row'}} onPress={this.resendOtp}>
                        <Image 
-                          source={require('../forgotPinScreens/images/refresh.png')} 
+                          source={require('../../resources/images/restart.png')} 
                           style={styles.ImageIconStyle} 
                           />
                        <Text style={[styles.text,{color:'red',textAlign:'right',paddingLeft:30,paddingTop:10}]}>
@@ -120,7 +132,16 @@ export default class Def extends React.Component {
                       <Text style={{color:'white', fontSize: 16}}>Verify</Text>
                          </TouchableOpacity>
                 </View>
+                <Modal transparent={true} visible={this.state.visible}>
+            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
+              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+                <ActivityIndicator size='large' color='red'/>
+                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Processing</Text>
+              </View>
             </View>
+          </Modal>
+            </View>
+                
             </TouchableWithoutFeedback>
 
             

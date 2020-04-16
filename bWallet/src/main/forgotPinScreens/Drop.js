@@ -9,20 +9,24 @@ import
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardSpacer} from 'react-native'
+  KeyboardSpacer,Modal,
+  AsyncStorage,
+ActivityIndicator} from 'react-native'
   // import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
   
 import { Dropdown } from 'react-native-material-dropdown';
 import Snackbar from 'react-native-snackbar';
-import styles from '../forgotPinScreens/styles/styles'
-// import Snackbar from 'react-native-snackbar';
+import styles from './styles/styles'
 export default class Drop extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      mobileNo:null
+      mobileNo:null,
+      visible:false,
+      code:971
     }
   }
+  
   validate=()=>{
        
     var text1='Enter a valid Mobile Number'
@@ -37,13 +41,19 @@ export default class Drop extends React.Component {
         text=text2
     }
     else {
-    this.props.navigation.navigate("Account Verification")
+      AsyncStorage.setItem("MobileNo",JSON.stringify(this.state.code+this.state.mobileNo))
+      this.setState({visible:true})
+      setTimeout(()=>{
+        this.setState({visible:false})
+        this.props.navigation.navigate("Account Verification")
+      },1000)
+   
     shows=true
     }
     if(shows==false){
     Snackbar.show({
         text:text,
-        duration:Snackbar.LENGTH_LONG,
+        duration:Snackbar.LENGTH_INDEFINITE,
         action:{
             text:'OK',
             textColor:'red'
@@ -73,8 +83,9 @@ export default class Drop extends React.Component {
         Keyboard.dismiss();
         console.log('dismissed keyboard')
       }}>
-        {/* <KeyboardAwareScrollView style={{flex:1}}
-        behavior="padding"> */}
+          
+       
+        
       <View style={styles.container}>
        <View style={{paddingLeft:60,paddingTop:60}}>
           <Image style={styles.logo} source={require('../forgotPinScreens/images/lock.png')}/>
@@ -83,7 +94,7 @@ export default class Drop extends React.Component {
         </View>
         <View style={styles.numerview}>
           <View style={{width:60}}>
-          <Dropdown data={data} value={971}/>
+          <Dropdown data={data} value={971} onChangeText={(code)=>this.setState({code:code})}/>
           </View>
           <TextInput maxLength={12} style={styles.textInput} placeholder="Phone Number" keyboardType={'numeric'}
           onChangeText={(m)=>{this.setState({mobileNo:m})}}/>
@@ -98,9 +109,18 @@ export default class Drop extends React.Component {
               <Text style={styles.text}>Next</Text>
             </TouchableOpacity>
           </View>
+          <Modal transparent={true} visible={this.state.visible}>
+            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
+              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+                <ActivityIndicator size='large' color='red'/>
+                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Request is being Processed</Text>
+              </View>
+            </View>
+          </Modal>
 
       </View>
-      {/* </KeyboardAwareScrollView> */}
+  
+     
       </TouchableWithoutFeedback>
     );
   }

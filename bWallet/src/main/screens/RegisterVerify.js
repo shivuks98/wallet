@@ -3,7 +3,7 @@ import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,Modal,ActivityI
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
 //on timer expire = "TImer has expired before verification,please regenerate OTP"
-const time=10
+const time=60
 class RegisterVerify extends React.Component{
     constructor(props){
         super(props)
