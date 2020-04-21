@@ -1,6 +1,7 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,AsyncStorage,Modal,ActivityIndicator,BackHandler } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,AsyncStorage,ActivityIndicator,BackHandler } from 'react-native'
 import styles from '../../resources/styles/Styles'
+import Modal from 'react-native-translucent-modal'
 // import SncakBar from 'react-native-snackbar'
 import SnackBar from 'react-native-snackbar'
 

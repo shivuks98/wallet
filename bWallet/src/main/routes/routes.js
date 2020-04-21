@@ -4,7 +4,7 @@ import {NavigationContainer,} from '@react-navigation/native';
 import {View,TouchableOpacity,Text,TextInput,Image,Button, Modal, Alert} from 'react-native'
 // import {Icon} from 'react-native-vector-icons'
 import SnackBar from 'react-native-snackbar'
-import Menu, {MenuItem}from "react-native-material-menu"
+import color from '../../resources/styles/statusBar'
 import Test from '../screens/l'
 import Test2 from '../screens/test'
 
@@ -48,15 +48,17 @@ export default class routes extends React.Component{
             <NavigationContainer >
                 <Stack.Navigator 
                 screenOptions={{
-                    headerStyle:{backgroundColor:'#424241'},
+                    headerStyle:{backgroundColor:color.StatusBar},
                     headerTintColor:'white',
+                    headerTitleStyle:{fontSize:18},
                     headerRight:()=><Image style={{height:30,width:100,}}
                 source={require('../../resources/images/bWalletC.png')}/>,
+                
                 
                 }}>
                     
                     
-                    <Stack.Screen name='l' component={Test}/>
+                    {/* <Stack.Screen name='l' component={Test}/> */}
                     
                     {/* Register screens */}
                     <Stack.Screen name='Login' component={Login}/>

@@ -1,8 +1,10 @@
 import React from 'react'
-import { View,Text,Modal,ActivityIndicator,BackHandler,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView,ToastAndroid } from 'react-native'
+import { View,Text,ActivityIndicator,BackHandler,TouchableOpacity,Image,StyleSheet,AsyncStorage,KeyboardAvoidingView,ToastAndroid } from 'react-native'
 import styles from '../../resources/styles/Styles'
+import Modal from 'react-native-translucent-modal'
 import SnackBar from 'react-native-snackbar'
-import shared from 'react-native-shared-preferences'
+import { ScrollView } from 'react-native-gesture-handler'
+
 // import  ImagePicker  from 'react-native-image-picker'
 
 
@@ -52,7 +54,7 @@ export default class ConfirmPhoto extends React.Component{
                     
             //     })
             // })
-            console.log(key,val)
+            // console.log(key,val)
             this.setState({
                 photo:JSON.parse(photo),
                 Nationalid:JSON.parse(nid),
@@ -131,8 +133,9 @@ export default class ConfirmPhoto extends React.Component{
                 this.setState({activity:true})
                 setTimeout(()=>{
                 this.setState({activity:false})
-                this.props.navigation.navigate("Login")
                 ToastAndroid.show("Registered Successfully",ToastAndroid.LONG)
+                this.props.navigation.navigate("Login")
+                
                 },2000) 
              },2000)
          },2000)
@@ -141,9 +144,11 @@ export default class ConfirmPhoto extends React.Component{
     render(){
         return(
             <View style={styles.container}>
+                <ScrollView style={{marginBottom:"15%"}}>
                 {this.state.loading && <ActivityIndicator/> }
-               
+                
                 <Text style={[styles.text,{paddingLeft:20}]}>Recent Photo</Text>
+                
                 <View style={design.imageview}>
                         <View style={{justifyContent:'center',flexDirection:'row',borderWidth:1,borderRadius:10,height:90,width:100}}>
                         <Image style={{width:"100%",height:"100%",borderRadius:10}} 
@@ -158,7 +163,7 @@ export default class ConfirmPhoto extends React.Component{
                 </View>
                 <View style={design.content}>
                 <Text style={[styles.text,{paddingLeft:20}]}>National ID</Text>
-        <Text style={[styles.textInput,styles.text,{width:'50%',margin:10}]} >{this.state.Nationalid}</Text>
+                <Text style={[styles.textInput,styles.text,{width:'50%',margin:10}]} >{this.state.Nationalid}</Text>
                 </View>
                 
                 <View style={design.imageview}>
@@ -204,7 +209,7 @@ export default class ConfirmPhoto extends React.Component{
                     </TouchableOpacity>
                 </View>
                
-                
+                </ScrollView>
                 <View style={styles.Button}>
                     <TouchableOpacity onPress={(this.confirm)} >
                         <Text style={styles.buttonText}>CONFIRM</Text>

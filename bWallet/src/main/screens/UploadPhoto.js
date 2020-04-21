@@ -6,10 +6,10 @@ import SnackBar from 'react-native-snackbar'
 import sharedData from 'react-native-shared-preferences'
 import {requestMultiple,PERMISSIONS} from 'react-native-permissions'
 
-// var d=60
-// requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then(()=>{
+var d=60
+requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then(()=>{
   
-// })
+})
 
 export default class UploadPhoto extends React.Component{
     constructor(props){

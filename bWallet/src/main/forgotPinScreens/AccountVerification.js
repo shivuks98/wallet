@@ -3,7 +3,8 @@ import {
   StyleSheet,Text,View,Image,TextInput,TouchableOpacity,TouchableWithoutFeedback,Keyboard,Modal,ActivityIndicator, AsyncStorage
 
 } from 'react-native';
-import styles from './styles/styles'
+// import styles from './styles/styles'
+import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar';
 export default class AccountVerification extends React.Component {
     constructor(props){
@@ -40,35 +41,35 @@ export default class AccountVerification extends React.Component {
         )
     }
       validate=()=>{
-        
-                var text1='Enter a valid OTP'
-                var text=''
-                var shows=false
-                var defaultpin=123456
-                if(this.state.pin==0 || this.state.pin!=defaultpin){
-                    text=text1
-                }
-                else {
+        
+                var text1='Enter a valid OTP'
+                var text=''
+                var shows=false
+                var defaultpin=123456
+                if(this.state.pin==0 || this.state.pin!=defaultpin){
+                    text=text1
+                }
+                else {
                   this.setState({visible:true})
                   setTimeout(()=>{
                     this.setState({visible:false})
                     this.props.navigation.navigate("Security Questions")
                   },1000)
-        //         this.props.navigation.navigate("Security Questions")
-                shows=true
-                }
-                if(shows==false){
-                Snackbar.show({
-                    text:text,
+        //         this.props.navigation.navigate("Security Questions")
+                shows=true
+                }
+                if(shows==false){
+                Snackbar.show({
+                    text:text,
                     duration:Snackbar.LENGTH_LONG,
-                         action:{
-                          text:'OK',
-                          textColor:'red'
-                          }
-                
-                        })
-                    }
-                  } 
+                         action:{
+                          text:'OK',
+                          textColor:'red'
+                          }
+                
+                        })
+                    }
+                  } 
 
   render() {
     
@@ -79,72 +80,50 @@ export default class AccountVerification extends React.Component {
         console.log('dismissed keyboard')
       }}>
        
-            <View style={styles.regform}>
+       <View style={[styles.container,{paddingTop:30}]}>
                 <View style={{paddingLeft:60,paddingRight:50}}>
-                <Text>A Verification code has been sent to{"\n"}
+                <Text style={styles.text}>A Verification code has been sent to
                      your registered mobile number {"\n"}
                      +{this.state.mobileNo} </Text>
-                 <Text style={styles.title1}>Please enter it below</Text>
-
-                <TextInput maxLength={6} style={styles.textinput1} placeholder="XXXXXX"
-                 onChangeText={(p)=>{this.setState({pin:p})}}
-                secureTextEntry
-                underlineColorAndroid={'transparent'} 
-                keyboardType={'numeric'} />
-
-                 <Text style={styles.text1}>Did not get the code?</Text>
-                 <View style={{alignItems:'flex-start',paddingLeft:20}}>
-                 {this.state.timer !=0 &&(
-                       <View style={{flexDirection:'row'}}> 
-                       <Image 
-                          source={require('../../resources/images/restart.png')} 
-                          style={styles.ImageIconStyle} 
-                          />
-                       <Text style={[styles.text,{color:'red',textAlign:'right',paddingLeft:30,paddingTop:10}]}>
-                                Click to resend in {this.state.timer} seconds.</Text></View>
-                                )}
-                        {this.state.timer ==0 &&(
-                       <View style={{flexDirection:'row'}}> 
-                       <TouchableOpacity style={{flexDirection:'row'}} onPress={this.resendOtp}>
-                       <Image 
-                          source={require('../../resources/images/restart.png')} 
-                          style={styles.ImageIconStyle} 
-                          />
-                       <Text style={[styles.text,{color:'red',textAlign:'right',paddingLeft:30,paddingTop:10}]}>
-                                Click to resend  </Text>
-                                </TouchableOpacity></View>
-                                )}
-
-                       </View>
-                 <View style={{flexDirection:'column',justifyContent:'space-between'}}>
-                {/* <TouchableOpacity >
-                  <Image 
-                source={require('../files/images/refresh.png')} 
-                style={styles.ImageIconStyle} 
-                />
-               
-              </TouchableOpacity> */}
-                </View>
-                </View>
-                     <View style={styles.button}>
-                     <TouchableOpacity onPress={this.validate}
-                        style={styles.button1}>
-                      <Text style={{color:'white', fontSize: 16}}>Verify</Text>
+                     </View>
+              <View style={[styles.container,{paddingLeft:70,paddingRight:70}]}>
+                     <Text style={[styles.text,{fontWeight:'bold'}]}>
+                    Please enter it below</Text>
+                <TextInput  secureTextEntry={true} maxLength={6}  onChangeText={(p)=>{this.setState({pin:p})}}
+                    placeholder="XXXXXX" style={styles.textInput} keyboardType='number-pad'/>
+                  <Text style={styles.text}>Did not get the code?</Text>
+                    <View>
+                        {this.state.timer !=0 &&(
+                        <View style={{flexDirection:'row'}}> 
+                        <Image style={{margin:10,marginTop:20}}source={require('../../resources/images/restart.png')}/>
+                                            
+                        <Text style={[styles.text,{color:'red',textAlign:'left'}]}>
+                        Click to resend in {this.state.timer} seconds.</Text></View>
+                        )}
+                        {this.state.timer==0 && <View style={{flexDirection:'row'}}> 
+                        <TouchableOpacity onPress={this.resendOtp} style={{flexDirection:'row'}}>
+                        <Image style={{margin:10,marginTop:20}}source={require('../../resources/images/restart.png')}/>
+                                            
+                        <Text style={[styles.text,{color:'red',textAlign:'right'}]}>
+                            Click to resend </Text>
+                        </TouchableOpacity></View>}
+                    </View>
+                    </View>
+                    <View style={styles.Button}>
+                     <TouchableOpacity onPress={this.validate}>
+                     <Text style={styles.buttonText}>Verify</Text>
                          </TouchableOpacity>
                 </View>
                 <Modal transparent={true} visible={this.state.visible}>
-            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
-              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+          <View style={styles.activityContainer}>
+          <View style={styles.innerActivity}>
                 <ActivityIndicator size='large' color='red'/>
-                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Processing</Text>
+                <Text style={styles.activityText}>Processing</Text>
               </View>
             </View>
           </Modal>
-            </View>
-                
+           </View>
             </TouchableWithoutFeedback>
-
-            
-        );
+);
   }
 }

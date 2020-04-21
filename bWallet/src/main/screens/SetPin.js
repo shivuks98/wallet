@@ -1,7 +1,8 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,BackHandler, KeyboardAvoidingView,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,BackHandler, KeyboardAvoidingView,AsyncStorage,ActivityIndicator } from 'react-native'
 import Styles from '../../resources/styles/Styles'
 import SnackBar from 'react-native-snackbar'
+import Modal from 'react-native-translucent-modal'
 // Please click BACK again to exit sign up process
 export default class SetPin extends React.Component{
     constructor(props){

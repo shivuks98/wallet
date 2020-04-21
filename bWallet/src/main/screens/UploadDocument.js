@@ -9,6 +9,7 @@ radio_prop=[
     {label:'Driving License',value:'DL'},
     {label:'Passport',value:"Passport"}
 ]
+const textValidate=/^[0-9a-zA-Z]*$/
 export default class UploadDocument extends React.Component{
     constructor(props){
         super(props)
@@ -154,7 +155,9 @@ export default class UploadDocument extends React.Component{
                         }/>
                         </View>
                     <Text style={Styles.text}>Passport/DL</Text> 
-                    <TextInput maxLength={15} onChangeText={(id)=>this.setState({Id:id})}
+                    <TextInput maxLength={15}value={this.state.Id} onChangeText={(id)=>{if(textValidate.test(id)){
+                        this.setState({Id:id})
+                    }}}
                     style={[Styles.textInput,{width:'57%',borderBottomWidth:2.3}]}/>
                     
                 {/* <Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 

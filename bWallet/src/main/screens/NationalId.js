@@ -5,7 +5,8 @@ import  ImagePicker  from 'react-native-image-picker'
 import SnackBar from 'react-native-snackbar'
 import {requestMultiple,PERMISSIONS} from 'react-native-permissions'
 
-
+// const textValidate=/^[0-9a-zA-Z]*$/
+const textValidate=/^[0-9a-zA-Z]*$/
 export default class NationalId extends React.Component{
     constructor(props){
         super(props)
@@ -128,7 +129,8 @@ export default class NationalId extends React.Component{
             <KeyboardAvoidingView style={Styles.container}>
                 <View style={[Styles.container,{alignItems:'center',paddingTop:'10%'}]}>
                     <Text style={Styles.text}>National ID</Text> 
-                    <TextInput maxLength={15} onChangeText={(id)=>this.setState({idnumber:id})}
+                    <TextInput maxLength={15}value={this.state.idnumber} onChangeText={(id)=>{if(textValidate.test(id))
+                        this.setState({idnumber:id})}} 
                     style={[Styles.textInput,{width:'57%',borderBottomWidth:2.3}]}/>
                     
                 {/* <Image style={{width:130,height:110,margin:10,borderColor:'black',borderWidth:1,}} 
@@ -153,7 +155,7 @@ export default class NationalId extends React.Component{
                         source={this.state.backId}/>)}
                     </TouchableOpacity>
                 </View>
-                <Text style={[Styles.text,{}]}> ID Front Image    ID Back Image</Text>
+                <Text style={[Styles.text,{marginTop:10}]}> ID Front Image    ID Back Image</Text>
                 </View>
                 <View style={Styles.Button}>
                     <TouchableOpacity onPress={this.handleNext}>

@@ -6,7 +6,8 @@ import {
   ,ToastAndroid
 } from 'react-native';
  
- import styles from './styles/styles'
+//  import styles from './styles/styles'
+ import styles from '../../resources/styles/Styles'
 export default class ForgotSecurity extends React.Component {
     constructor(props){
         super(props)
@@ -41,7 +42,7 @@ export default class ForgotSecurity extends React.Component {
              <Text style={{fontSize:18}}>Your Registered EMAILID</Text>
             </View>
              <View style={{}}>
-                <Text style={styles.title2}>abcd@gmail.com</Text>
+                <Text style={styles.title3}>abcd@gmail.com</Text>
              </View>
              <View>
                 <Text style={{paddingBottom:0,fontSize:20,fontWeight:"bold"}}> 
@@ -69,5 +70,4 @@ export default class ForgotSecurity extends React.Component {
     );
   }
 }
-
 

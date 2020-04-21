@@ -7,7 +7,8 @@ import {
  import  Drop from './Drop'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Snackbar from 'react-native-snackbar';
-import styles from './styles/styles'
+// import styles from './styles/styles'
+import styles from '../../resources/styles/Styles'
 export default class Security extends React.Component
 {
          
@@ -39,7 +40,7 @@ export default class Security extends React.Component
             
             var text=''
             var shows=false
-            var defaultanswer="abc"
+            var defaultanswer="abc"
             if(this.state.ans==null){
                 text=text1
             }else if(this.state.ans!=defaultanswer){
@@ -80,7 +81,7 @@ export default class Security extends React.Component
       <View style={{padding:20}}>
         <Text style={{fontSize:18}}>What is the name of your first school?</Text>
 
-        <View style={styles.numberView1}>
+        <View style={{padding:20}}>
           <TextInput placeholder="Security Answer"
            onChangeText={(a)=>{this.setState({ans:a})}}
            style={styles.textinput2}/>
@@ -101,10 +102,10 @@ export default class Security extends React.Component
           </TouchableOpacity>
         </View>
         <Modal transparent={true} visible={this.state.visible}>
-            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
-              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+        <View style={styles.activityContainer}>
+          <View style={styles.innerActivity}>
                 <ActivityIndicator size='large' color='red'/>
-                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Processing</Text>
+                <Text style={styles.activityText}>Processing</Text>
               </View>
             </View>
           </Modal>
@@ -115,5 +116,3 @@ export default class Security extends React.Component
       );
   }
 }
-
-

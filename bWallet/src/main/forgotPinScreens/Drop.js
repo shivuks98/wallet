@@ -9,14 +9,16 @@ import
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardSpacer,Modal,
+  KeyboardSpacer,
   AsyncStorage,
 ActivityIndicator} from 'react-native'
-  // import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-  
+import Modal from 'react-native-translucent-modal'
 import { Dropdown } from 'react-native-material-dropdown';
 import Snackbar from 'react-native-snackbar';
-import styles from './styles/styles'
+// import styles from './styles/styles'
+import styles from '../../resources/styles/Styles'
+
+const numericRegex = /^[0-9]*$/
 export default class Drop extends React.Component {
   constructor(props){
     super(props)
@@ -34,7 +36,7 @@ export default class Drop extends React.Component {
     
     var text=''
     var shows=false
-    var defaultpin=123456
+    var defaultpin=123456
     if(this.state.mobileNo==null){
         text=text1
     }else if(this.state.mobileNo.length<8){
@@ -81,39 +83,47 @@ export default class Drop extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={()=>{
         Keyboard.dismiss();
-        console.log('dismissed keyboard')
+        
       }}>
           
        
         
-      <View style={styles.container}>
+      <View style={styles.container1}>
        <View style={{paddingLeft:60,paddingTop:60}}>
           <Image style={styles.logo} source={require('../forgotPinScreens/images/lock.png')}/>
           <Text style={{paddingTop:20}}>Please enter the mobile number</Text>
-          
-        </View>
-        <View style={styles.numerview}>
-          <View style={{width:60}}>
-          <Dropdown data={data} value={971} onChangeText={(code)=>this.setState({code:code})}/>
-          </View>
-          <TextInput maxLength={12} style={styles.textInput} placeholder="Phone Number" keyboardType={'numeric'}
-          onChangeText={(m)=>{this.setState({mobileNo:m})}}/>
-          </View>
-          {!this.state.mobileNo && (<Text style={{color:'red',paddingLeft:140}}>Please enter the mobile number</Text>)}
-          <View style={styles.button}>
 
+        </View>
+        <View style={[styles.numberView,{justifyContent:'space-between'}]}>
+          <View style={{width:60}}>
+          <Dropdown data={data} value={971}containerStyle={{width:60}} itemCount={8} pickerStyle={{width:70}} dropdownPosition={0}
+           animationDuration={0} onChangeText={(code)=>this.setState({code:code})}/>
+          </View>
+          <TextInput value={this.state.mobileNo} maxLength={10} style={[styles.textInput,{marginLeft:20,width:"90%"}]} placeholder="Phone Number" keyboardType={'numeric'}
+          onChangeText={(number)=>
+            {if(numericRegex.test(number))
+          {
+            this.setState({mobileNo:number})
+
+          }else if(number.length<1){
+            this.setState({mobileNo:null})
+          }
+          }}/>
+          </View>
+          {/* {!this.state.mobileNo && (<Text style={{color:'red',paddingLeft:140}}>Please enter the mobile number</Text>)} */}
           
-            <TouchableOpacity onPress={this.validate}
-            style={styles.button1}
-            >
-              <Text style={styles.text}>Next</Text>
+          
+          
+          <View style={styles.Button}>
+            <TouchableOpacity onPress={this.validate}>
+              <Text style={styles.buttonText}>Next</Text>
             </TouchableOpacity>
           </View>
           <Modal transparent={true} visible={this.state.visible}>
-            <View style={{backgroundColor:"#000000aa",flex:1,alignItems:'center',justifyContent:'center'}}>
-              <View style={{backgroundColor:'#ffff',width:'80%',height:60,flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
+          <View style={styles.activityContainer}>
+          <View style={styles.innerActivity}>
                 <ActivityIndicator size='large' color='red'/>
-                <Text style={{justifyContent:'center',paddingHorizontal:10}}>Request is being Processed</Text>
+                <Text style={styles.activityText}>Request is being Processed</Text>
               </View>
             </View>
           </Modal>
@@ -125,5 +135,4 @@ export default class Drop extends React.Component {
     );
   }
 }
-
 

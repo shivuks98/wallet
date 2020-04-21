@@ -1,32 +1,76 @@
-import React, { Component } from 'react';
-import { Text, View,Modal,TouchableOpacity,KeyboardAvoidingView,TextInput,ScrollView, AsyncStorage, ActivityIndicator, ActivityIndicatorBase } from 'react-native';
-// import { TextField } from 'react-native-material-textfield';
-import { Dropdown } from 'react-native-material-dropdown';
-import CountryPicker,{CountryModalPicker} from 'react-native-country-picker-modal'
-// import { Icon } from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-vector-icons/AntDesign';
-import shred from 'react-native-shared-preferences'
-import {requestMultiple,PERMISSIONS} from 'react-native-permissions'
+import React,{useState} from 'react'
+import {
+  AppRegistry,
+  Component,
+  StyleSheet,
+  Text,
+  View,TextInput,
+  StatusBarIOS,
+  PixelRatio
+} from 'react-native';
 
-// var d=60
-requestMultiple([PERMISSIONS.ANDROID.CAMERA,PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE]).then(()=>{
-  
-})
+import CountryPicker from 'react-native-country-picker-modal';
+import Picker from 'react-native-country-picker-modal'
 
-export default class l extends Component{
+const check=/^[0-9a-zA-Z\s]+$/
+// const [value, setValue] = useState("");
+export default class l extends React.Component {
   constructor(props){
-    super(props)
-    this.state={timer:false}
+    // StatusBarIOS.setHidden(true);
+    super(props);
+    this.state = {
+      
+      text:null
+    };
   }
-
   
-render(){
-  return(
-    <View>
-     
-    </View>
-      
-      
-  )
+
+  onChange = e => {
+    const input = e;
+    if (/^[a-zA-Z]+$/.test(input) || input === "") {
+      setValue(input);
+    }
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        
+        <TextInput placeholder="dgfhs" value={this.state.text} underlineColorAndroid='red'
+        onChange={this.onChange}
+           
+        
+// style={styles.questionText}
+
+      />
+
+      </View>
+    );
+  }
 }
-}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    fontSize: 12,
+    textAlign: 'center',
+    color: '#888',
+    marginBottom: 5,
+  },
+  data: {
+    padding: 15,
+    marginTop: 10,
+    backgroundColor: '#ddd',
+    borderColor: '#888',
+    borderWidth: 1 / PixelRatio.get(),
+    color: '#777'
+  }
+});

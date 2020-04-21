@@ -1,6 +1,7 @@
 import React from 'react'
-import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,Modal,ActivityIndicator } from 'react-native'
+import { View,Text,TextInput,TouchableOpacity,Image,AsyncStorage,ActivityIndicator } from 'react-native'
 import styles from '../../resources/styles/Styles'
+import Modal from 'react-native-translucent-modal'
 import Snackbar from 'react-native-snackbar'
 //on timer expire = "TImer has expired before verification,please regenerate OTP"
 const time=60
@@ -75,8 +76,8 @@ class RegisterVerify extends React.Component{
         return(
             <View style={[styles.container,{paddingTop:30}]}>
                 <View style={{paddingHorizontal:40}}>
-                <Text style={styles.text}>A Verification code has been sent to your registered mobile number</Text>
-                <Text style={styles.text}>+{this.state.mobileNumber }</Text>
+                <Text style={styles.text}>A Verification code has been sent to your registered mobile number{'\n'}
+                +{this.state.mobileNumber }</Text>
                 </View>
                 <View style={[styles.container,{paddingLeft:70,paddingRight:70}]}>
                     <Text style={[styles.text,{fontWeight:'bold'}]}>
@@ -87,14 +88,14 @@ class RegisterVerify extends React.Component{
                     <View>
                         {this.state.timer !=0 &&(
                         <View style={{flexDirection:'row'}}> 
-                        <Image style={{margin:10}}source={require('../../resources/images/restart.png')}/>
+                        <Image style={{margin:10,marginTop:20}}source={require('../../resources/images/restart.png')}/>
                                             
                         <Text style={[styles.text,{color:'red',textAlign:'left'}]}>
                         Click to resend in {this.state.timer} seconds.</Text></View>
                         )}
                         {this.state.timer==0 && <View style={{flexDirection:'row'}}> 
                         <TouchableOpacity onPress={this.resendOtp} style={{flexDirection:'row'}}>
-                        <Image style={{margin:10}}source={require('../../resources/images/restart.png')}/>
+                        <Image style={{margin:10,marginTop:20}}source={require('../../resources/images/restart.png')}/>
                                             
                         <Text style={[styles.text,{color:'red',textAlign:'right'}]}>
                             Click to resend </Text>

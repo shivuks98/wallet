@@ -7,6 +7,11 @@ export default StyleSheet.create({
         alignContent:'flex-start',
 
     },
+    container1:{
+        flex:1,
+        backgroundColor:'#ffff'
+
+    },
     imagecontainer:{
         alignItems:'center',
         paddingTop:20
@@ -22,12 +27,14 @@ export default StyleSheet.create({
         
     },
     text:{
-        marginTop:10,
+        marginTop:'10%',
         fontSize:16
     },
     textInput:{
         borderBottomColor:"red",
         borderBottomWidth:1,
+        // alignItems:'stretch',
+        // width:150
         
     },
     numberView:{
@@ -44,14 +51,16 @@ export default StyleSheet.create({
         backgroundColor:"red",
         position:'absolute',
         bottom:0,
-        height:35
+        height:50,
+        justifyContent:'center'
     },
     buttonText:{
         textAlign:'center',
         color:'#ffff',
         fontSize:20,
         justifyContent:'center',
-        alignContent:'center'
+        alignItems:'center',
+        
     },
     photo:{
         width:100,
@@ -80,6 +89,75 @@ export default StyleSheet.create({
     activityText:{
         justifyContent:'center',
         fontSize:18,
-        paddingHorizontal:20}
+        paddingHorizontal:20},
+
+        //added by SV
+        logo:{
+            padding:20,
+            height:30,
+            width:20
+          },
+          numerview1:{
+            paddingTop:40,
+            paddingRight:40,
+            flexDirection:'row',
+            justifyContent:'space-evenly'
+          },
+          textinput2:{
+            borderBottomColor:"black",
+                borderBottomWidth:1,
+                fontSize:20,
+        },
+        buttonText2:{
+            textAlign:'center',
+            color:'white',
+            fontSize:20,
+            justifyContent:'center',
+            alignContent:'center',
+            borderRadius:7,
+            borderWidth:1,
+            backgroundColor:'red',
+            width:300,
+            padding:5
+        },
+        Bottom:{
+  
+            alignItems:'center',
+            position:'absolute',
+            bottom:0,
+            width:"100%"
+        },
+        regform:{
+            alignSelf:'stretch',
+            flex:1,
+            justifyContent:'center',
+            alignItems:'center'
+            
+        },
+        title3:{
+            padding:20,
+            color:'red',
+            fontSize:20,
+            fontWeight:"bold"
+        },
+        regform1:{
+            alignSelf:'stretch',
+            paddingTop:150,
+            flex:1
+            
+        },
+        // textinput:{
+        //     borderBottomColor:'black',
+        //     borderBottomWidth:1,
+        //     padding:60
+        // },
+        textinput2:{
+            borderBottomColor:'black',
+            borderBottomWidth:1,
+            padding:20
+    
+        },
+    
+
     
 })

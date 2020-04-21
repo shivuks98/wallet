@@ -32,4 +32,3 @@ export default class Def extends React.Component {
 );
   }
 }
-

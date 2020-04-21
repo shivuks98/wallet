@@ -49,12 +49,12 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         flexDirection:'row',
         alignItems:'center',
-        marginTop:20
+        marginTop:20,
     
     },
     view:{
         alignItems:'center',
-        height:30,
+        height:35,
         backgroundColor:'gray',
         margin:15,
         width:150,
@@ -64,7 +64,7 @@ const styles=StyleSheet.create({
     view1:{
         alignItems:'center',
         alignContent:'center',
-        height:30,
+        height:35,
         width:150,
         backgroundColor:'#d50000',
         justifyContent:"center"

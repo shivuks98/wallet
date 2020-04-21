@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import {Modal,Image,View,Text,TextInput,BackHandler,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage, ActivityIndicator} from 'react-native'
+import {Image,View,Text,TextInput,BackHandler,TouchableOpacity,StyleSheet,ScrollView,KeyboardAvoidingView,AsyncStorage, ActivityIndicator} from 'react-native'
 import {Dropdown} from 'react-native-material-dropdown'
 import styles from '../../resources/styles/Styles'
 import Snackbar from 'react-native-snackbar'
+import Modal from 'react-native-translucent-modal'
 // import Styles from '../../resources/styles/Styles'
 // var show=true
 class CustomAlert extends Component{
@@ -34,6 +35,7 @@ class CustomAlert extends Component{
 }
 var data =[
     {value:973},{value:965},{value:968},{value:974},{value:966},{value:971}]
+const numberCheck=/^[0-9]*$/
 export default class Register1 extends Component{
     constructor(props){
         super(props)
@@ -52,7 +54,7 @@ export default class Register1 extends Component{
         var text3="Please Enter a valid Email Address"
         var text=''
         var shows=false
-        if(this.state.mobileNo==null){
+        if(this.state.mobileNo==null||this.state.mobileNo.length==0){
             text=text1
         }else if(this.state.mobileNo.length<8){
             text=text2
@@ -122,10 +124,18 @@ export default class Register1 extends Component{
                     </View>
                     <View style={styles.numberView}>
                         <View style={{width:60}}>
-                            <Dropdown  data={data} value={this.state.code} 
-                            onChangeText={(code)=>this.setState({code:code})}/>
+                            <Dropdown  data={data} value={this.state.code} containerStyle={{width:60}}
+                                itemCount={8} pickerStyle={{width:70}} dropdownPosition={0}
+                                animationDuration={0} onChangeText={(code)=>this.setState({code:code})}/>
                         </View>
-                        <TextInput maxLength={9} keyboardType='phone-pad' onChangeText={(mobile)=>this.setState({mobileNo:mobile})}
+                        <TextInput maxLength={10} value={this.state.mobileNo}  keyboardType='phone-pad' 
+                        onChangeText={(mobile)=>{ 
+                           if(numberCheck.test(mobile)){
+                            this.setState({mobileNo:mobile})
+                        }}}
+                            
+                        // this.setState({mobileNo:mobile})}
+                        
                          placeholder="Mobile Number" style={[styles.textInput,{width:'80%',marginLeft:30,marginBottom:0,paddingTop:30}]}/>
                     </View>
                     <View style={[styles.textview,{paddingTop:20}]}>
