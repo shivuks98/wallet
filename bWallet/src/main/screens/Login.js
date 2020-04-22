@@ -26,7 +26,7 @@ export default class Login extends React.Component{
             
             </View>})
         this.state={
-            value:989,
+            value:data[0].value,
             mobileNo:null,
             pin:null,
             visible:true,
@@ -160,12 +160,12 @@ export default class Login extends React.Component{
                     
                     </ScrollView>
                     <View style={{}}>
-                            <View style={[styles.Button,{bottom:40,height:35}]}>
+                            <View style={[styles.Button,{bottom:44,height:40}]}>
                                 <TouchableOpacity onPress={this.login} > 
                                     <Text style={[styles.buttonText,]}>Login</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={[styles.Button,{height:35,backgroundColor:'gray',}]}>
+                            <View style={[styles.Button,{height:40,backgroundColor:'gray',}]}>
                                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('terms')}> 
                                     <Text style={styles.buttonText}>Register</Text>
                                 </TouchableOpacity>
